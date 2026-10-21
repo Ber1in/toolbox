@@ -25,7 +25,7 @@ npm run preview  # preview the production build
 - **Icons**: lucide components compile to inline SVG; no icon fonts or remote assets
 - **Third-party libraries**: qrcode, jsbarcode, yaml, smol-toml and diff are all bundled
 - **No remote APIs, analytics scripts or external images**
-- **GitHub button** defaults to `href="#"` and performs no navigation or request; set `VITE_REPO_URL` to point at an intranet repository (see `.env.example`)
+- **GitHub button** opens https://github.com/Ber1in/toolbox in a new tab; no request is made until you click it. Set `VITE_REPO_URL` to point at an intranet mirror instead (see `.env.example`)
 - **Request audit**: loading the built home page and several tool pages produced 56 requests, all same-origin, with 0 external domains
 
 To deploy under a sub-path (e.g. `http://intranet/toolbox/`), set `base: '/toolbox/'` in `vite.config.ts` and rebuild.
@@ -150,7 +150,7 @@ npm run preview  # 预览构建产物
 - **图标**：lucide 组件编译为内联 SVG，不加载图标字体或远程资源
 - **第三方库**：qrcode、jsbarcode、yaml、smol-toml、diff 全部打进 bundle
 - **无远程接口、无统计脚本、无外部图片**
-- **GitHub 按钮**默认 `href="#"`，点击不跳转也不发请求；需要指向内网仓库时设置环境变量 `VITE_REPO_URL`（参考 `.env.example`）
+- **GitHub 按钮**直接打开项目仓库 https://github.com/Ber1in/toolbox（新标签页），点击前不发起任何请求；内网镜像可通过环境变量 `VITE_REPO_URL` 覆盖（参考 `.env.example`）
 - **请求审计**：用构建产物打开首页和多个工具页，共 56 个网络请求全部指向本站，外部域名 0 个
 
 部署到子路径（如 `http://intranet/toolbox/`）时，在 `vite.config.ts` 中设置 `base: '/toolbox/'` 后重新构建即可。

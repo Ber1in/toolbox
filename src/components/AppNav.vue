@@ -16,10 +16,6 @@ const emit = defineEmits<{
   (e: 'navigate', target: 'all' | 'favorites' | 'about'): void
 }>()
 
-function onRepoClick(event: MouseEvent) {
-  if (!repoUrl) event.preventDefault()
-}
-
 function onLocaleChange(event: Event) {
   setLocale((event.target as HTMLSelectElement).value as Locale)
 }
@@ -77,15 +73,13 @@ function onLocaleChange(event: Event) {
         <Sun v-else :size="32" :stroke-width="2" />
       </button>
 
-      <!-- Empty by default: no external navigation. Set VITE_REPO_URL for intranet deployments. -->
+      <!-- Opens the public repository; override with VITE_REPO_URL for intranet mirrors. -->
       <a
         class="github"
-        :href="repoUrl || '#'"
-        :target="repoUrl ? '_blank' : undefined"
-        :rel="repoUrl ? 'noreferrer noopener' : undefined"
-        :aria-disabled="repoUrl ? undefined : 'true'"
-        :title="t(repoUrl ? '打开代码仓库' : '未配置代码仓库地址（VITE_REPO_URL）')"
-        @click="onRepoClick"
+        :href="repoUrl"
+        target="_blank"
+        rel="noreferrer noopener"
+        :title="t('打开代码仓库')"
       >
         GitHub
       </a>

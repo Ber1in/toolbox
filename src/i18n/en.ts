@@ -29,7 +29,6 @@ export const en: Record<string, string> = {
   切换到浅色主题: 'Switch to light theme',
   切换到深色主题: 'Switch to dark theme',
   打开代码仓库: 'Open repository',
-  '未配置代码仓库地址（VITE_REPO_URL）': 'Repository URL not configured (VITE_REPO_URL)',
   语言: 'Language',
   产品: 'Product',
   资源: 'Resources',
