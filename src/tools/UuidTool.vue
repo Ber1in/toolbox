@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const version = ref<'v4' | 'v7'>('v4')
 const count = ref(5)
@@ -61,15 +64,15 @@ generate()
       <div class="row">
         <div class="segmented">
           <button :class="{ 'is-active': version === 'v4' }" type="button" @click="version = 'v4'">
-            v4（随机）
+            {{ t('v4（随机）') }}
           </button>
           <button :class="{ 'is-active': version === 'v7' }" type="button" @click="version = 'v7'">
-            v7（按时间排序）
+            {{ t('v7（按时间排序）') }}
           </button>
         </div>
 
         <label class="field" style="width: 120px">
-          <span class="label">数量</span>
+          <span class="label">{{ t('数量') }}</span>
           <input v-model.number="count" class="input" type="number" min="1" max="100" />
         </label>
       </div>
@@ -77,32 +80,32 @@ generate()
       <div class="row">
         <label class="checkbox">
           <input v-model="uppercase" type="checkbox" />
-          大写
+          {{ t('大写') }}
         </label>
         <label class="checkbox">
           <input v-model="withHyphens" type="checkbox" />
-          保留连字符
+          {{ t('保留连字符') }}
         </label>
         <label class="checkbox">
           <input v-model="withBraces" type="checkbox" />
-          加大括号
+          {{ t('加大括号') }}
         </label>
       </div>
 
       <div class="row">
-        <button class="btn btn--primary" type="button" @click="generate">重新生成</button>
-        <CopyButton :text="values.join('\n')" label="复制全部" />
+        <button class="btn btn--primary" type="button" @click="generate">{{ t('重新生成') }}</button>
+        <CopyButton :text="values.join('\n')" :label="t('复制全部')" />
       </div>
 
       <p class="hint">
-        v4 完全随机；v7 前 48 位是毫秒时间戳，按字典序排列即按生成时间排序。
+        {{ t('v4 完全随机；v7 前 48 位是毫秒时间戳，按字典序排列即按生成时间排序。') }}
       </p>
     </section>
 
     <section class="panel">
       <div v-for="(value, index) in values" :key="index" class="value-row">
         <code class="value">{{ value }}</code>
-        <CopyButton :text="value" label="复制" />
+        <CopyButton :text="value" :label="t('复制')" />
       </div>
     </section>
   </div>

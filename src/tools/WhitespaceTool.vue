@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const input = ref('')
 const trimLines = ref(true)
@@ -50,11 +53,11 @@ const removed = computed(() => {
 <template>
   <section class="panel">
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea
         v-model="input"
         class="textarea"
-        placeholder="粘贴需要清理的文本"
+        :placeholder="t('粘贴需要清理的文本')"
         spellcheck="false"
       />
     </label>
@@ -62,32 +65,32 @@ const removed = computed(() => {
     <div class="row">
       <label class="checkbox">
         <input v-model="trimLines" type="checkbox" />
-        去除每行首尾空格
+        {{ t('去除每行首尾空格') }}
       </label>
       <label class="checkbox">
         <input v-model="collapseSpaces" type="checkbox" />
-        合并连续空格
+        {{ t('合并连续空格') }}
       </label>
       <label class="checkbox">
         <input v-model="removeBlankLines" type="checkbox" />
-        删除空行
+        {{ t('删除空行') }}
       </label>
       <label class="checkbox">
         <input v-model="removeAllSpaces" type="checkbox" />
-        删除所有空格
+        {{ t('删除所有空格') }}
       </label>
       <label class="checkbox">
         <input v-model="removeLineBreaks" type="checkbox" />
-        删除所有换行
+        {{ t('删除所有换行') }}
       </label>
     </div>
 
     <div class="field">
       <div class="row row--end">
-        <span v-if="removed > 0" class="hint">已减少 {{ removed }} 个字符</span>
+        <span v-if="removed > 0" class="hint">{{ t('已减少 {n} 个字符', { n: removed }) }}</span>
         <CopyButton :text="result" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result }}</pre>

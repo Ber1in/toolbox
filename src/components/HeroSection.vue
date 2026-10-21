@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { Search } from 'lucide-vue-next'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const search = defineModel<string>({ required: true })
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -30,13 +33,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
   <section class="hero">
     <span class="hero__badge">
       <span class="hero__badge-dot" aria-hidden="true" />
-      免费 · 开源 · 本地运行
+      {{ t('免费 · 开源 · 本地运行') }}
     </span>
 
-    <h1 class="hero__title">开发者工具箱，一站搞定</h1>
+    <h1 class="hero__title">{{ t('开发者工具箱，一站搞定') }}</h1>
 
     <p class="hero__subtitle">
-      编码、格式化、时间、网络、文本、图像、离线生成 —— 7 大类 40+ 实用工具，无需登录，打开即用。
+      {{ t('编码、格式化、时间、网络、文本、图像、离线生成 —— 7 大类 40+ 实用工具，无需登录，打开即用。') }}
     </p>
 
     <div class="search">
@@ -46,8 +49,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         v-model="search"
         class="search__input"
         type="search"
-        placeholder="搜索工具，如 Base64、时间戳、二维码…"
-        aria-label="搜索工具"
+        :placeholder="t('搜索工具，如 Base64、时间戳、二维码…')"
+        :aria-label="t('搜索工具')"
         autocomplete="off"
       />
       <kbd class="search__kbd">⌘ K</kbd>

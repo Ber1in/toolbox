@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const length = ref(24)
 const count = ref(5)
@@ -70,44 +73,44 @@ generate()
     <section class="panel">
       <div class="cols">
         <label class="field">
-          <span class="label">长度：{{ length }}</span>
+          <span class="label">{{ t('长度：{n}', { n: length }) }}</span>
           <input v-model.number="length" type="range" min="1" max="128" step="1" />
         </label>
 
         <label class="field">
-          <span class="label">生成数量</span>
+          <span class="label">{{ t('生成数量') }}</span>
           <input v-model.number="count" class="input" type="number" min="1" max="50" />
         </label>
       </div>
 
       <label class="field">
-        <span class="label">字符集</span>
+        <span class="label">{{ t('字符集') }}</span>
         <select v-model="charset" class="select">
           <option v-for="item in charsets" :key="item.value" :value="item.value">
-            {{ item.label }}
+            {{ t(item.label) }}
           </option>
         </select>
       </label>
 
       <label v-if="charset === 'custom'" class="field">
-        <span class="label">自定义字符</span>
-        <input v-model="custom" class="input mono" type="text" placeholder="例如 abc123!@#" />
+        <span class="label">{{ t('自定义字符') }}</span>
+        <input v-model="custom" class="input mono" type="text" :placeholder="t('例如 abc123!@#')" />
       </label>
 
       <div class="row">
         <button class="btn btn--primary" type="button" :disabled="!alphabet" @click="generate">
-          重新生成
+          {{ t('重新生成') }}
         </button>
-        <CopyButton :text="values.join('\n')" label="复制全部" />
+        <CopyButton :text="values.join('\n')" :label="t('复制全部')" />
       </div>
 
-      <p v-if="!alphabet" class="error">字符集不能为空。</p>
+      <p v-if="!alphabet" class="error">{{ t('字符集不能为空。') }}</p>
     </section>
 
     <section v-if="values.length" class="panel">
       <div v-for="(value, index) in values" :key="index" class="value-row">
         <code class="value">{{ value }}</code>
-        <CopyButton :text="value" label="复制" />
+        <CopyButton :text="value" :label="t('复制')" />
       </div>
     </section>
   </div>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import JsBarcode from 'jsbarcode'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const text = ref('123456789012')
 const format = ref('CODE128')
@@ -20,7 +23,7 @@ watchEffect(() => {
   if (!svg.value) return
 
   if (!text.value) {
-    error.value = '请输入条形码内容'
+    error.value = t('请输入条形码内容')
     return
   }
 
@@ -52,28 +55,28 @@ const downloadUrl = computed(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">内容</span>
+        <span class="label">{{ t('内容') }}</span>
         <input v-model="text" class="input mono" type="text" spellcheck="false" />
       </label>
 
       <label class="field">
-        <span class="label">条码格式</span>
+        <span class="label">{{ t('条码格式') }}</span>
         <select v-model="format" class="select">
           <option v-for="item in formats" :key="item.value" :value="item.value">
-            {{ item.label }}
+            {{ t(item.label) }}
           </option>
         </select>
       </label>
 
       <div class="row">
         <a v-if="downloadUrl" class="btn btn--primary" :href="downloadUrl" download="barcode.svg">
-          下载 SVG
+          {{ t('下载 SVG') }}
         </a>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
       <p class="hint">
-        EAN / UPC 对长度和校验位有要求，输入不合法时会提示；CODE128 支持任意 ASCII 字符。
+        {{ t('EAN / UPC 对长度和校验位有要求，输入不合法时会提示；CODE128 支持任意 ASCII 字符。') }}
       </p>
     </section>
 

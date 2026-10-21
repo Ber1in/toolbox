@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const DIGITS = '0123456789abcdefghijklmnopqrstuvwxyz'
 const STANDARD_BASES = [2, 8, 10, 16]
@@ -24,7 +27,7 @@ type ParseResult = { ok: true; value: bigint } | { ok: false; error: string }
 
 function parse(raw: string, base: number): ParseResult {
   let text = raw.trim().toLowerCase().replace(/[\s_,]/g, '')
-  if (!text) return { ok: false, error: '请输入要转换的数值' }
+  if (!text) return { ok: false, error: t('请输入要转换的数值') }
 
   let negative = false
   if (text.startsWith('-')) {
@@ -36,13 +39,16 @@ function parse(raw: string, base: number): ParseResult {
 
   const prefix = PREFIXES[base]
   if (prefix && text.startsWith(prefix)) text = text.slice(2)
-  if (!text) return { ok: false, error: '请输入要转换的数值' }
+  if (!text) return { ok: false, error: t('请输入要转换的数值') }
 
   let value = 0n
   for (const char of text) {
     const digit = DIGITS.indexOf(char)
     if (digit < 0 || digit >= base) {
-      return { ok: false, error: `「${char}」不是 ${base} 进制的合法数字` }
+      return {
+        ok: false,
+        error: t('「{char}」不是 {base} 进制的合法数字', { char, base }),
+      }
     }
     value = value * BigInt(base) + BigInt(digit)
   }
@@ -119,13 +125,13 @@ const bitLength = computed(() => {
 const placeholder = computed(() => {
   switch (sourceBase.value) {
     case 2:
-      return '例如 1111 1111'
+      return t('例如 1111 1111')
     case 8:
-      return '例如 377'
+      return t('例如 377')
     case 16:
-      return '例如 ff 或 0xFF'
+      return t('例如 ff 或 0xFF')
     default:
-      return '例如 255'
+      return t('例如 255')
   }
 })
 
@@ -143,16 +149,16 @@ watch(sourceBase, (next, previous) => {
     <section class="panel">
       <div class="cols">
         <label class="field">
-          <span class="label">源进制</span>
+          <span class="label">{{ t('源进制') }}</span>
           <select v-model.number="sourceBase" class="select">
             <option v-for="base in baseOptions" :key="base" :value="base">
-              {{ base }} 进制{{ BASE_NAMES[base] ? `（${BASE_NAMES[base]}）` : '' }}
+              {{ base }}{{ BASE_NAMES[base] ? ` · ${t(BASE_NAMES[base])}` : '' }}
             </option>
           </select>
         </label>
 
         <label class="field">
-          <span class="label">数值</span>
+          <span class="label">{{ t('数值') }}</span>
           <input
             v-model="input"
             class="input mono"
@@ -167,15 +173,15 @@ watch(sourceBase, (next, previous) => {
       <div class="row">
         <label class="checkbox">
           <input v-model="uppercaseHex" type="checkbox" />
-          十六进制大写
+          {{ t('十六进制大写') }}
         </label>
         <label class="checkbox">
           <input v-model="groupBinary" type="checkbox" />
-          二进制每 4 位分组
+          {{ t('二进制每 4 位分组') }}
         </label>
         <label class="checkbox">
           <input v-model="showPrefix" type="checkbox" />
-          显示 0b / 0o / 0x 前缀
+          {{ t('显示 0b / 0o / 0x 前缀') }}
         </label>
 
         <button
@@ -185,26 +191,26 @@ watch(sourceBase, (next, previous) => {
           :disabled="!input"
           @click="input = ''"
         >
-          清空
+          {{ t('清空') }}
         </button>
       </div>
 
       <p v-if="errorText" class="error">{{ errorText }}</p>
       <p v-else class="hint">
-        支持 2–36 进制，可带 0b / 0o / 0x 前缀，空格与下划线会被忽略；使用 BigInt 计算，不会丢精度。
+        {{ t('支持 2–36 进制，可带 0b / 0o / 0x 前缀，空格与下划线会被忽略；使用 BigInt 计算，不会丢精度。') }}
       </p>
     </section>
 
     <section v-if="!errorText" class="panel">
       <div class="row">
-        <p class="panel__title">对应值</p>
-        <span class="hint">二进制共 {{ bitLength }} 位</span>
+        <p class="panel__title">{{ t('对应值') }}</p>
+        <span class="hint">{{ t('二进制共 {n} 位', { n: bitLength }) }}</span>
       </div>
 
       <div class="stat-grid outputs">
         <div v-for="item in outputs" :key="item.base" class="stat">
           <div class="stat__head">
-            <span class="stat__label">{{ item.label }}（{{ item.base }} 进制）</span>
+            <span class="stat__label">{{ t('{label}（{base} 进制）', { label: t(item.label), base: item.base }) }}</span>
             <CopyButton :text="item.copy" label="复制" />
           </div>
           <span class="stat__value">{{ item.display }}</span>
@@ -214,16 +220,16 @@ watch(sourceBase, (next, previous) => {
 
     <section v-if="!errorText" class="panel">
       <div class="row">
-        <p class="panel__title">全部进制（2–36）</p>
-        <span class="hint">上下滚动查看全部 35 种进制</span>
+        <p class="panel__title">{{ t('全部进制（2–36）') }}</p>
+        <span class="hint">{{ t('上下滚动查看全部 35 种进制') }}</span>
       </div>
 
       <div class="table-wrap bases">
         <table class="table">
           <thead>
             <tr>
-              <th>进制</th>
-              <th>对应值</th>
+              <th>{{ t('进制') }}</th>
+              <th>{{ t('对应值') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -234,8 +240,8 @@ watch(sourceBase, (next, previous) => {
             >
               <td class="bases__name">
                 {{ item.base }}
-                <span v-if="item.name" class="muted">· {{ item.name }}</span>
-                <span v-if="item.base === sourceBase" class="bases__tag">源</span>
+                <span v-if="item.name" class="muted">· {{ t(item.name) }}</span>
+                <span v-if="item.base === sourceBase" class="bases__tag">{{ t('源') }}</span>
               </td>
               <td class="mono">{{ item.display }}</td>
             </tr>

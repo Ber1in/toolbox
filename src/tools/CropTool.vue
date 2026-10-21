@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const file = ref<File | null>(null)
 const sourceUrl = ref('')
@@ -16,7 +19,7 @@ function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
     image.onload = () => resolve(image)
-    image.onerror = () => reject(new Error('图片加载失败'))
+    image.onerror = () => reject(new Error(t('图片加载失败')))
     image.src = src
   })
 }
@@ -31,7 +34,7 @@ async function render() {
     canvas.height = height.value
 
     const context = canvas.getContext('2d')
-    if (!context) throw new Error('当前浏览器不支持 Canvas')
+    if (!context) throw new Error(t('当前浏览器不支持 Canvas'))
 
     if (mode.value === 'stretch') {
       context.drawImage(image, 0, 0, canvas.width, canvas.height)
@@ -50,7 +53,7 @@ async function render() {
     }
 
     const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'))
-    if (!blob) throw new Error('裁剪失败')
+    if (!blob) throw new Error(t('裁剪失败'))
 
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
     resultUrl.value = URL.createObjectURL(blob)
@@ -65,7 +68,7 @@ async function onFileChange(event: Event) {
   if (!selected) return
 
   if (!selected.type.startsWith('image/')) {
-    error.value = '请选择图片文件'
+    error.value = t('请选择图片文件')
     return
   }
 
@@ -109,22 +112,22 @@ onBeforeUnmount(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">选择图片</span>
+        <span class="label">{{ t('选择图片') }}</span>
         <input class="input" type="file" accept="image/*" @change="onFileChange" />
       </label>
 
       <p v-if="sourceWidth" class="hint">
-        原始尺寸：{{ sourceWidth }} × {{ sourceHeight }} px
+        {{ t('原始尺寸：{w} × {h} px', { w: sourceWidth, h: sourceHeight }) }}
       </p>
 
       <div class="cols">
         <label class="field">
-          <span class="label">输出宽度（px）</span>
+          <span class="label">{{ t('输出宽度（px）') }}</span>
           <input v-model.number="width" class="input" type="number" min="1" step="1" />
         </label>
 
         <label class="field">
-          <span class="label">输出高度（px）</span>
+          <span class="label">{{ t('输出高度（px）') }}</span>
           <input v-model.number="height" class="input" type="number" min="1" step="1" />
         </label>
       </div>
@@ -132,31 +135,31 @@ onBeforeUnmount(() => {
       <div class="row">
         <label class="checkbox">
           <input v-model="keepRatio" type="checkbox" />
-          保持原始比例
+          {{ t('保持原始比例') }}
         </label>
 
         <div class="segmented">
           <button :class="{ 'is-active': mode === 'cover' }" type="button" @click="mode = 'cover'">
-            居中裁剪
+            {{ t('居中裁剪') }}
           </button>
           <button :class="{ 'is-active': mode === 'stretch' }" type="button" @click="mode = 'stretch'">
-            拉伸
+            {{ t('拉伸') }}
           </button>
         </div>
       </div>
 
       <div class="row">
         <button class="btn btn--primary" type="button" :disabled="!file" @click="render">
-          应用裁剪
+          {{ t('应用裁剪') }}
         </button>
-        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">下载 PNG</a>
+        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">{{ t('下载 PNG') }}</a>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
     </section>
 
     <section v-if="resultUrl" class="panel">
-      <img class="result" :src="resultUrl" alt="裁剪结果预览" />
+      <img class="result" :src="resultUrl" :alt="t('裁剪结果预览')" />
     </section>
   </div>
 </template>

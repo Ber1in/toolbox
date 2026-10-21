@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const input = ref('')
 const mode = ref<'format' | 'minify'>('format')
 const indent = ref(2)
@@ -35,7 +37,7 @@ const result = computed(() => {
   if (!xml) return { value: '', error: '' }
 
   if (!xml.includes('<')) {
-    return { value: '', error: '看起来不是 XML：没有找到标签' }
+    return { value: '', error: t('看起来不是 XML：没有找到标签') }
   }
 
   const open = (xml.match(/<[^!?/][^>]*[^/]>/g) ?? []).length
@@ -43,7 +45,10 @@ const result = computed(() => {
 
   return {
     value: mode.value === 'format' ? formatXml(xml, indent.value) : xml.replace(/>\s+</g, '><'),
-    error: open !== close ? `标签数量可能不匹配：开始标签 ${open} 个，结束标签 ${close} 个` : '',
+    error:
+      open !== close
+        ? t('标签数量可能不匹配：开始标签 {open} 个，结束标签 {close} 个', { open, close })
+        : '',
   }
 })
 </script>
@@ -57,29 +62,29 @@ const result = computed(() => {
           type="button"
           @click="mode = 'format'"
         >
-          格式化
+          {{ t('格式化') }}
         </button>
         <button
           :class="{ 'is-active': mode === 'minify' }"
           type="button"
           @click="mode = 'minify'"
         >
-          压缩
+          {{ t('压缩') }}
         </button>
       </div>
 
       <label v-if="mode === 'format'" class="checkbox">
         <input v-model.number="indent" type="radio" :value="2" />
-        2 空格
+        {{ t('2 空格') }}
       </label>
       <label v-if="mode === 'format'" class="checkbox">
         <input v-model.number="indent" type="radio" :value="4" />
-        4 空格
+        {{ t('4 空格') }}
       </label>
     </div>
 
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea
         v-model="input"
         class="textarea"
@@ -92,7 +97,7 @@ const result = computed(() => {
       <div class="row row--end">
         <CopyButton :text="result.value" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result.value }}</pre>

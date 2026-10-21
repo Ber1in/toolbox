@@ -2,7 +2,9 @@
 import { computed, ref } from 'vue'
 import { diffLines } from 'diff'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const left = ref('')
 const right = ref('')
 const ignoreWhitespace = ref(false)
@@ -45,20 +47,20 @@ const unified = computed(() =>
   <section class="panel">
     <div class="cols">
       <label class="field">
-        <span class="label">原文</span>
-        <textarea v-model="left" class="textarea" placeholder="粘贴原始文本" spellcheck="false" />
+        <span class="label">{{ t('原文') }}</span>
+        <textarea v-model="left" class="textarea" :placeholder="t('粘贴原始文本')" spellcheck="false" />
       </label>
 
       <label class="field">
-        <span class="label">对比文本</span>
-        <textarea v-model="right" class="textarea" placeholder="粘贴修改后的文本" spellcheck="false" />
+        <span class="label">{{ t('对比文本') }}</span>
+        <textarea v-model="right" class="textarea" :placeholder="t('粘贴修改后的文本')" spellcheck="false" />
       </label>
     </div>
 
     <div class="row">
       <label class="checkbox">
         <input v-model="ignoreWhitespace" type="checkbox" />
-        忽略空白差异
+        {{ t('忽略空白差异') }}
       </label>
 
       <span class="hint">
@@ -68,20 +70,20 @@ const unified = computed(() =>
       </span>
 
       <div class="row row--end" style="margin-left: auto">
-        <CopyButton :text="unified" label="复制差异" />
+        <CopyButton :text="unified" :label="t('复制差异')" />
         <button
           class="btn btn--sm"
           type="button"
           :disabled="!left && !right"
           @click="(left = ''), (right = '')"
         >
-          清空
+          {{ t('清空') }}
         </button>
       </div>
     </div>
 
     <div class="diff-view">
-      <p v-if="!rows.length" class="hint">在上方输入两段文本后，这里会逐行显示差异。</p>
+      <p v-if="!rows.length" class="hint">{{ t('在上方输入两段文本后，这里会逐行显示差异。') }}</p>
       <div
         v-for="(row, index) in rows"
         :key="index"

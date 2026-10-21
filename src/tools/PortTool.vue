@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const search = ref('')
 
@@ -60,7 +63,7 @@ const filtered = computed(() => {
   const query = search.value.trim().toLowerCase()
   if (!query) return ports
   return ports.filter((item) =>
-    [String(item.port), item.service, item.protocol, item.note]
+    [String(item.port), item.service, item.protocol, t(item.note)]
       .join(' ')
       .toLowerCase()
       .includes(query),
@@ -71,20 +74,20 @@ const filtered = computed(() => {
 <template>
   <section class="panel">
     <label class="field">
-      <span class="label">搜索端口 / 服务</span>
-      <input v-model="search" class="input" type="search" placeholder="例如 443、redis、数据库" />
+      <span class="label">{{ t('搜索端口 / 服务') }}</span>
+      <input v-model="search" class="input" type="search" :placeholder="t('例如 443、redis、数据库')" />
     </label>
 
-    <p class="hint">共 {{ filtered.length }} 条记录</p>
+    <p class="hint">{{ t('共 {n} 条记录', { n: filtered.length }) }}</p>
 
     <div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th>端口</th>
-            <th>服务</th>
-            <th>协议</th>
-            <th>说明</th>
+            <th>{{ t('端口') }}</th>
+            <th>{{ t('服务') }}</th>
+            <th>{{ t('协议') }}</th>
+            <th>{{ t('说明') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -92,7 +95,7 @@ const filtered = computed(() => {
             <td class="mono">{{ item.port }}</td>
             <td>{{ item.service }}</td>
             <td class="muted">{{ item.protocol }}</td>
-            <td class="muted">{{ item.note }}</td>
+            <td class="muted">{{ t(item.note) }}</td>
           </tr>
         </tbody>
       </table>

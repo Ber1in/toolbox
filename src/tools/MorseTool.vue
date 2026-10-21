@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const mode = ref<'encode' | 'decode'>('encode')
 const input = ref('')
 
@@ -39,7 +41,11 @@ const result = computed(() => {
     )
     return {
       value: words.join(' / '),
-      error: unknown.length ? `以下字符没有摩尔斯编码，已跳过：${[...new Set(unknown)].join(' ')}` : '',
+      error: unknown.length
+        ? t('以下字符没有摩尔斯编码，已跳过：{chars}', {
+            chars: [...new Set(unknown)].join(' '),
+          })
+        : '',
     }
   }
 
@@ -63,21 +69,21 @@ const result = computed(() => {
     <div class="row">
       <div class="segmented">
         <button :class="{ 'is-active': mode === 'encode' }" type="button" @click="mode = 'encode'">
-          文本 → 摩尔斯
+          {{ t('文本 → 摩尔斯') }}
         </button>
         <button :class="{ 'is-active': mode === 'decode' }" type="button" @click="mode = 'decode'">
-          摩尔斯 → 文本
+          {{ t('摩尔斯 → 文本') }}
         </button>
       </div>
-      <span class="hint">字母之间用空格，单词之间用 / 分隔</span>
+      <span class="hint">{{ t('字母之间用空格，单词之间用 / 分隔') }}</span>
     </div>
 
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea
         v-model="input"
         class="textarea"
-        :placeholder="mode === 'encode' ? '输入文本，例如：SOS HELLO' : '输入摩尔斯码，例如：... --- ... / .... . .-.. .-.. ---'"
+        :placeholder="t(mode === 'encode' ? '输入文本，例如：SOS HELLO' : '输入摩尔斯码，例如：... --- ... / .... . .-.. .-.. ---')"
         spellcheck="false"
       />
     </label>
@@ -86,7 +92,7 @@ const result = computed(() => {
       <div class="row row--end">
         <CopyButton :text="result.value" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result.value }}</pre>
@@ -94,7 +100,7 @@ const result = computed(() => {
     </div>
 
     <details class="details">
-      <summary class="hint">查看摩尔斯码对照表</summary>
+      <summary class="hint">{{ t('查看摩尔斯码对照表') }}</summary>
       <div class="table-wrap">
         <table class="table">
           <tbody>

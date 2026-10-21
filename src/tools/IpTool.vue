@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const input = ref('192.168.1.1')
 
@@ -67,7 +70,7 @@ const parsed = computed(() => {
 
   if (value.includes(':')) {
     const groups = expandIpv6(value)
-    if (!groups) return { error: '不是合法的 IPv6 地址' }
+    if (!groups) return { error: t('不是合法的 IPv6 地址') }
 
     const lower = groups.join(':')
     let type = '全球单播'
@@ -91,7 +94,7 @@ const parsed = computed(() => {
 
   const octets = value.split('.')
   if (octets.length !== 4 || octets.some((part) => !/^\d{1,3}$/.test(part) || Number(part) > 255)) {
-    return { error: '不是合法的 IPv4 地址' }
+    return { error: t('不是合法的 IPv4 地址') }
   }
 
   const nums = octets.map(Number)
@@ -129,37 +132,37 @@ const parsed = computed(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">IPv4 / IPv6 地址</span>
-        <input v-model="input" class="input mono" type="text" placeholder="192.168.1.1 或 2001:db8::1" spellcheck="false" />
+        <span class="label">{{ t('IPv4 / IPv6 地址') }}</span>
+        <input v-model="input" class="input mono" type="text" :placeholder="t('192.168.1.1 或 2001:db8::1')" spellcheck="false" />
       </label>
-      <p class="hint">自动识别 IPv4 / IPv6：IPv4 显示整数与二进制，IPv6 显示完整形式与压缩形式。</p>
+      <p class="hint">{{ t('自动识别 IPv4 / IPv6：IPv4 显示整数与二进制，IPv6 显示完整形式与压缩形式。') }}</p>
       <p v-if="parsed && 'error' in parsed" class="error">{{ parsed.error }}</p>
     </section>
 
     <section v-if="parsed && !('error' in parsed)" class="panel">
       <div class="row">
         <span class="badge-type">{{ parsed.kind }}</span>
-        <span class="badge-type">{{ parsed.type }}</span>
+        <span class="badge-type">{{ t(parsed.type) }}</span>
       </div>
 
       <div class="stat-grid">
         <div class="stat">
-          <span class="stat__label">{{ parsed.kind === 'IPv6' ? '完整形式' : '标准形式' }}</span>
+          <span class="stat__label">{{ t(parsed.kind === 'IPv6' ? '完整形式' : '标准形式') }}</span>
           <span class="stat__value">{{ parsed.expanded }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">{{ parsed.kind === 'IPv6' ? '压缩形式' : '整数' }}</span>
+          <span class="stat__label">{{ t(parsed.kind === 'IPv6' ? '压缩形式' : '整数') }}</span>
           <span class="stat__value">{{ parsed.kind === 'IPv6' ? parsed.compressed : parsed.extra[0].value }}</span>
         </div>
         <div v-for="item in parsed.extra" :key="item.label" class="stat">
-          <span class="stat__label">{{ item.label }}</span>
-          <span class="stat__value">{{ item.value }}</span>
+          <span class="stat__label">{{ t(item.label) }}</span>
+          <span class="stat__value">{{ t(item.value) }}</span>
         </div>
       </div>
 
       <div class="row">
-        <CopyButton :text="parsed.expanded" label="复制完整形式" />
-        <CopyButton v-if="parsed.kind === 'IPv6'" :text="parsed.compressed" label="复制压缩形式" />
+        <CopyButton :text="parsed.expanded" :label="t('复制完整形式')" />
+        <CopyButton v-if="parsed.kind === 'IPv6'" :text="parsed.compressed" :label="t('复制压缩形式')" />
       </div>
     </section>
   </div>

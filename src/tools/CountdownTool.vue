@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 function pad(value: number) {
   return String(value).padStart(2, '0')
@@ -56,16 +59,16 @@ function setTomorrowNine() {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">目标时间</span>
+        <span class="label">{{ t('目标时间') }}</span>
         <input v-model="target" class="input" type="datetime-local" />
       </label>
 
       <div class="row">
-        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(5)">5 分钟后</button>
-        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(30)">30 分钟后</button>
-        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(60)">1 小时后</button>
+        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(5)">{{ t('5 分钟后') }}</button>
+        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(30)">{{ t('30 分钟后') }}</button>
+        <button class="btn btn--sm btn--ghost" type="button" @click="setPreset(60)">{{ t('1 小时后') }}</button>
         <button class="btn btn--sm btn--ghost" type="button" @click="setTomorrowNine">
-          明天 9:00
+          {{ t('明天 9:00') }}
         </button>
       </div>
     </section>
@@ -74,24 +77,24 @@ function setTomorrowNine() {
       <div class="countdown" :class="{ 'is-finished': finished }">
         <div class="countdown__item">
           <span class="countdown__value">{{ parts.days }}</span>
-          <span class="countdown__label">天</span>
+          <span class="countdown__label">{{ t('天') }}</span>
         </div>
         <div class="countdown__item">
           <span class="countdown__value">{{ pad(parts.hours) }}</span>
-          <span class="countdown__label">时</span>
+          <span class="countdown__label">{{ t('时') }}</span>
         </div>
         <div class="countdown__item">
           <span class="countdown__value">{{ pad(parts.minutes) }}</span>
-          <span class="countdown__label">分</span>
+          <span class="countdown__label">{{ t('分') }}</span>
         </div>
         <div class="countdown__item">
           <span class="countdown__value">{{ pad(parts.seconds) }}</span>
-          <span class="countdown__label">秒</span>
+          <span class="countdown__label">{{ t('秒') }}</span>
         </div>
       </div>
 
-      <p v-if="finished" class="hint">目标时间已到。</p>
-      <p v-else-if="!targetTime" class="error">目标时间格式不正确。</p>
+      <p v-if="finished" class="hint">{{ t('目标时间已到。') }}</p>
+      <p v-else-if="!targetTime" class="error">{{ t('目标时间格式不正确。') }}</p>
     </section>
   </div>
 </template>

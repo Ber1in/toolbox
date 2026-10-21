@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { Moon, Sun } from 'lucide-vue-next'
 import { repoUrl } from '../config'
+import { localeOptions, setLocale, useI18n, type Locale } from '../i18n'
 import LogoMark from './LogoMark.vue'
+
+const { t, locale } = useI18n()
 
 defineProps<{
   theme: 'light' | 'dark'
@@ -16,6 +19,10 @@ const emit = defineEmits<{
 function onRepoClick(event: MouseEvent) {
   if (!repoUrl) event.preventDefault()
 }
+
+function onLocaleChange(event: Event) {
+  setLocale((event.target as HTMLSelectElement).value as Locale)
+}
 </script>
 
 <template>
@@ -24,17 +31,17 @@ function onRepoClick(event: MouseEvent) {
       <span class="nav__logo">
         <LogoMark />
       </span>
-      <span class="nav__title">工具盒 Toolbox</span>
+      <span class="nav__title">{{ t('工具盒 Toolbox') }}</span>
     </button>
 
-    <nav class="nav__links" aria-label="主导航">
+    <nav class="nav__links" :aria-label="t('主导航')">
       <button
         class="nav__link"
         :class="{ 'is-active': view === 'all' }"
         type="button"
         @click="emit('navigate', 'all')"
       >
-        全部工具
+        {{ t('全部工具') }}
       </button>
       <button
         class="nav__link"
@@ -42,18 +49,27 @@ function onRepoClick(event: MouseEvent) {
         type="button"
         @click="emit('navigate', 'favorites')"
       >
-        收藏
+        {{ t('收藏') }}
       </button>
       <button class="nav__link" type="button" @click="emit('navigate', 'about')">
-        关于
+        {{ t('关于') }}
       </button>
     </nav>
 
     <div class="nav__actions">
+      <label class="lang">
+        <span class="sr-only">{{ t('语言') }}</span>
+        <select class="lang__select" :value="locale" @change="onLocaleChange">
+          <option v-for="option in localeOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </label>
+
       <button
         class="theme-toggle"
         type="button"
-        :aria-label="theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'"
+        :aria-label="t(theme === 'dark' ? '切换到浅色主题' : '切换到深色主题')"
         :aria-pressed="theme === 'dark'"
         @click="emit('toggle-theme')"
       >
@@ -68,7 +84,7 @@ function onRepoClick(event: MouseEvent) {
         :target="repoUrl ? '_blank' : undefined"
         :rel="repoUrl ? 'noreferrer noopener' : undefined"
         :aria-disabled="repoUrl ? undefined : 'true'"
-        :title="repoUrl ? '打开代码仓库' : '未配置代码仓库地址（VITE_REPO_URL）'"
+        :title="t(repoUrl ? '打开代码仓库' : '未配置代码仓库地址（VITE_REPO_URL）')"
         @click="onRepoClick"
       >
         GitHub
@@ -152,6 +168,39 @@ function onRepoClick(event: MouseEvent) {
 
 .theme-toggle:hover {
   background: var(--color-border);
+}
+
+.lang {
+  position: relative;
+  display: inline-flex;
+}
+
+.lang__select {
+  height: 40px;
+  padding: 0 28px 0 12px;
+  border-radius: var(--radius-button);
+  background: var(--color-chip);
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: var(--fw-medium);
+  font-family: inherit;
+  appearance: none;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 15px) 17px, calc(100% - 10px) 17px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: background-color 0.15s ease;
+}
+
+.lang__select:hover {
+  background-color: var(--color-border);
+}
+
+.lang__select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .github {

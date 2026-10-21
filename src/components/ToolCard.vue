@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Star } from 'lucide-vue-next'
 import type { Tool } from '../data/toolbox'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 defineProps<{
   tool: Tool
@@ -17,15 +20,15 @@ const emit = defineEmits<{ (e: 'toggle-favorite', id: string): void }>()
         <component :is="tool.icon" :size="24" :stroke-width="2" aria-hidden="true" />
       </span>
 
-      <h3 class="card__title">{{ tool.name }}</h3>
-      <p class="card__desc">{{ tool.description }}</p>
+      <h3 class="card__title">{{ t(tool.name) }}</h3>
+      <p class="card__desc">{{ t(tool.description) }}</p>
     </RouterLink>
 
     <button
       class="card__star"
       :class="{ 'is-on': favorite }"
       type="button"
-      :aria-label="favorite ? `取消收藏 ${tool.name}` : `收藏 ${tool.name}`"
+      :aria-label="t(favorite ? '取消收藏 {name}' : '收藏 {name}', { name: t(tool.name) })"
       :aria-pressed="favorite"
       @click="emit('toggle-favorite', tool.id)"
     >

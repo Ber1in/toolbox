@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const input = ref('')
 
@@ -47,7 +50,7 @@ const items = computed(() => [
   { label: '段落数', value: stats.value.paragraphs.toLocaleString() },
   { label: '中文字符', value: stats.value.cjk.toLocaleString() },
   { label: 'UTF-8 字节', value: stats.value.bytes.toLocaleString() },
-  { label: '预计阅读', value: `${stats.value.reading} 分钟` },
+  { label: '预计阅读', value: t('{n} 分钟', { n: stats.value.reading }) },
 ])
 </script>
 
@@ -55,28 +58,28 @@ const items = computed(() => [
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">输入文本</span>
+        <span class="label">{{ t('输入文本') }}</span>
         <textarea
           v-model="input"
           class="textarea"
-          placeholder="粘贴或输入文本，统计结果会实时更新"
+          :placeholder="t('粘贴或输入文本，统计结果会实时更新')"
           spellcheck="false"
         />
       </label>
 
       <div class="row">
-        <CopyButton :text="input" label="复制原文" />
+        <CopyButton :text="input" :label="t('复制原文')" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
     </section>
 
     <section class="panel">
-      <p class="panel__title">统计结果</p>
+      <p class="panel__title">{{ t('统计结果') }}</p>
       <div class="stat-grid">
         <div v-for="item in items" :key="item.label" class="stat">
-          <span class="stat__label">{{ item.label }}</span>
+          <span class="stat__label">{{ t(item.label) }}</span>
           <span class="stat__value">{{ item.value }}</span>
         </div>
       </div>

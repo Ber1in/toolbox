@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { CategoryKey, ToolCategory } from '../data/toolbox'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 defineProps<{
   categories: ToolCategory[]
@@ -10,7 +13,7 @@ const emit = defineEmits<{ (e: 'select', key: CategoryKey): void }>()
 </script>
 
 <template>
-  <div class="tabs" role="tablist" aria-label="工具分类">
+  <div class="tabs" role="tablist" :aria-label="t('工具分类')">
     <button
       v-for="category in categories"
       :key="category.key"
@@ -21,7 +24,7 @@ const emit = defineEmits<{ (e: 'select', key: CategoryKey): void }>()
       :aria-selected="category.key === active"
       @click="emit('select', category.key)"
     >
-      {{ category.label }}
+      {{ t(category.label) }}
     </button>
   </div>
 </template>

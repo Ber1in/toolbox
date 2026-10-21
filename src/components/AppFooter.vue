@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import LogoMark from './LogoMark.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const groups = [
   {
@@ -24,23 +27,23 @@ const groups = [
         <span class="footer__logo">
           <LogoMark />
         </span>
-        <p class="footer__name">工具盒 Toolbox</p>
-        <p class="footer__desc">免费开源、本地运行的开发者工具箱。</p>
+        <p class="footer__name">{{ t('工具盒 Toolbox') }}</p>
+        <p class="footer__desc">{{ t('免费开源、本地运行的开发者工具箱。') }}</p>
       </div>
 
       <div class="footer__groups">
         <div v-for="group in groups" :key="group.title" class="footer__group">
-          <p class="footer__group-title">{{ group.title }}</p>
+          <p class="footer__group-title">{{ t(group.title) }}</p>
           <a v-for="link in group.links" :key="link" class="footer__link" href="#">
-            {{ link }}
+            {{ t(link) }}
           </a>
         </div>
       </div>
     </div>
 
     <div class="footer__bottom">
-      <p class="footer__legal">2025 工具盒 Toolbox. 保留所有权利。</p>
-      <p class="footer__legal">数据本地处理 · 无需注册</p>
+      <p class="footer__legal">{{ t('2025 工具盒 Toolbox. 保留所有权利。') }}</p>
+      <p class="footer__legal">{{ t('数据本地处理 · 无需注册') }}</p>
     </div>
   </footer>
 </template>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const hex = ref('#5046e5')
 
@@ -71,7 +74,7 @@ function onHexInput(event: Event) {
     <section class="panel">
       <div class="cols">
         <label class="field">
-          <span class="label">取色</span>
+          <span class="label">{{ t('取色') }}</span>
           <input
             class="color-input"
             type="color"
@@ -93,7 +96,7 @@ function onHexInput(event: Event) {
         </label>
       </div>
 
-      <p v-if="!isValid" class="error">请输入 3 位或 6 位十六进制颜色值，例如 #5046e5</p>
+      <p v-if="!isValid" class="error">{{ t('请输入 3 位或 6 位十六进制颜色值，例如 #5046e5') }}</p>
 
       <div v-if="rgb && hsl" class="stat-grid">
         <div class="stat">
@@ -109,15 +112,15 @@ function onHexInput(event: Event) {
           <span class="stat__value">{{ hslText }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">亮度</span>
+          <span class="stat__label">{{ t('亮度') }}</span>
           <span class="stat__value">{{ Math.round((rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000) }}</span>
         </div>
       </div>
 
       <div class="row">
-        <CopyButton :text="normalizedHex" label="复制 HEX" />
-        <CopyButton :text="rgbText" label="复制 RGB" />
-        <CopyButton :text="hslText" label="复制 HSL" />
+        <CopyButton :text="normalizedHex" :label="t('复制 HEX')" />
+        <CopyButton :text="rgbText" :label="t('复制 RGB')" />
+        <CopyButton :text="hslText" :label="t('复制 HSL')" />
       </div>
     </section>
 

@@ -2,7 +2,9 @@
 import { computed, ref } from 'vue'
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const input = ref('')
 const mode = ref<'toJson' | 'toYaml' | 'format'>('toJson')
 
@@ -23,7 +25,9 @@ const result = computed(() => {
   } catch (error) {
     return {
       value: '',
-      error: `解析失败：${error instanceof Error ? error.message : String(error)}`,
+      error: t('解析失败：{message}', {
+        message: error instanceof Error ? error.message : String(error),
+      }),
     }
   }
 })
@@ -62,13 +66,13 @@ const placeholder = computed(() => {
           type="button"
           @click="mode = 'format'"
         >
-          格式化 YAML
+          {{ t('格式化 YAML') }}
         </button>
       </div>
     </div>
 
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea v-model="input" class="textarea" :placeholder="placeholder" spellcheck="false" />
     </label>
 
@@ -76,7 +80,7 @@ const placeholder = computed(() => {
       <div class="row row--end">
         <CopyButton :text="result.value" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result.value }}</pre>

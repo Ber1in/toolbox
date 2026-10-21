@@ -3,9 +3,11 @@ import { computed } from 'vue'
 import { ArrowLeft, Star } from 'lucide-vue-next'
 import { useFavorites } from '../composables/useFavorites'
 import { findTool } from '../tools/registry'
+import { useI18n } from '../i18n'
 
 const props = defineProps<{ id: string }>()
 
+const { t } = useI18n()
 const { isFavorite, toggleFavorite } = useFavorites()
 
 const entry = computed(() => findTool(props.id))
@@ -16,7 +18,7 @@ const entry = computed(() => findTool(props.id))
     <div class="tool-page__inner">
       <RouterLink class="tool-back" to="/">
         <ArrowLeft :size="16" :stroke-width="2" />
-        全部工具
+        {{ t('全部工具') }}
       </RouterLink>
 
       <header class="tool-head">
@@ -25,15 +27,15 @@ const entry = computed(() => findTool(props.id))
         </span>
 
         <div class="tool-head__text">
-          <h1 class="tool-head__title">{{ entry.name }}</h1>
-          <p class="tool-head__desc">{{ entry.description }}</p>
+          <h1 class="tool-head__title">{{ t(entry.name) }}</h1>
+          <p class="tool-head__desc">{{ t(entry.description) }}</p>
         </div>
 
         <button
           class="tool-head__fav"
           :class="{ 'is-on': isFavorite(entry.id) }"
           type="button"
-          :aria-label="isFavorite(entry.id) ? `取消收藏 ${entry.name}` : `收藏 ${entry.name}`"
+          :aria-label="t(isFavorite(entry.id) ? '取消收藏 {name}' : '收藏 {name}', { name: t(entry.name) })"
           :aria-pressed="isFavorite(entry.id)"
           @click="toggleFavorite(entry.id)"
         >
@@ -53,11 +55,11 @@ const entry = computed(() => findTool(props.id))
     <div class="tool-page__inner">
       <RouterLink class="tool-back" to="/">
         <ArrowLeft :size="16" :stroke-width="2" />
-        全部工具
+        {{ t('全部工具') }}
       </RouterLink>
       <div class="panel">
-        <p class="panel__title">工具不存在</p>
-        <p class="panel__hint">这个工具可能已经改名或下线，回到首页看看其它工具吧。</p>
+        <p class="panel__title">{{ t('工具不存在') }}</p>
+        <p class="panel__hint">{{ t('这个工具可能已经改名或下线，回到首页看看其它工具吧。') }}</p>
       </div>
     </div>
   </main>

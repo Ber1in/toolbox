@@ -6,7 +6,9 @@ import HeroSection from '../components/HeroSection.vue'
 import ToolSection from '../components/ToolSection.vue'
 import { useFavorites } from '../composables/useFavorites'
 import { toolCategories, type CategoryKey, type Tool } from '../data/toolbox'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const { favorites, toggleFavorite } = useFavorites()
@@ -26,9 +28,9 @@ function matches(tool: Tool, categoryLabel: string) {
   if (!query.value) return true
 
   return (
-    tool.name.toLowerCase().includes(query.value) ||
-    tool.description.toLowerCase().includes(query.value) ||
-    categoryLabel.toLowerCase().includes(query.value)
+    t(tool.name).toLowerCase().includes(query.value) ||
+    t(tool.description).toLowerCase().includes(query.value) ||
+    t(categoryLabel).toLowerCase().includes(query.value)
   )
 }
 
@@ -48,10 +50,10 @@ const resultCount = computed(() =>
 const emptyMessage = computed(() => {
   if (view.value === 'favorites') {
     return query.value
-      ? '收藏里没有匹配的工具，换个关键词试试。'
-      : '还没有收藏任何工具 —— 把鼠标移到工具卡上，点右上角星标即可收藏。'
+      ? t('收藏里没有匹配的工具，换个关键词试试。')
+      : t('还没有收藏任何工具 —— 把鼠标移到工具卡上，点右上角星标即可收藏。')
   }
-  return '没有找到匹配的工具，换个关键词试试。'
+  return t('没有找到匹配的工具，换个关键词试试。')
 })
 
 function scrollToCategory(key: CategoryKey) {
@@ -103,7 +105,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
     <div id="tools" class="content">
       <CategoryTabs :categories="toolCategories" :active="active" @select="onSelectTab" />
 
-      <p class="sr-only" role="status" aria-live="polite">共 {{ resultCount }} 个工具</p>
+      <p class="sr-only" role="status" aria-live="polite">{{ t('共 {n} 个工具', { n: resultCount }) }}</p>
 
       <ToolSection
         v-for="entry in visibleCategories"

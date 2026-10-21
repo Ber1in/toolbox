@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 interface FieldDef {
   key: string
@@ -48,7 +51,14 @@ function parseValue(raw: string, def: FieldDef) {
   const value = named ?? Number(raw)
 
   if (!Number.isInteger(value) || value < def.min || value > def.max) {
-    throw new Error(`${def.label}取值不合法：${raw}（范围 ${def.min}-${def.max}）`)
+    throw new Error(
+      t('{field}取值不合法：{raw}（范围 {min}-{max}）', {
+        field: t(def.label),
+        raw,
+        min: def.min,
+        max: def.max,
+      }),
+    )
   }
   return value
 }
@@ -58,13 +68,13 @@ function parseField(raw: string, def: FieldDef): ParsedField {
   let wildcard = false
 
   for (const part of raw.split(',')) {
-    if (!part) throw new Error(`${def.label}存在空字段`)
+    if (!part) throw new Error(t('{field}存在空字段', { field: t(def.label) }))
 
     const [base, stepRaw] = part.split('/')
     const step = stepRaw === undefined ? 1 : Number(stepRaw)
 
     if (!Number.isInteger(step) || step <= 0) {
-      throw new Error(`${def.label}的步长不合法：${part}`)
+      throw new Error(t('{field}的步长不合法：{part}', { field: t(def.label), part }))
     }
 
     let start = def.min
@@ -81,7 +91,7 @@ function parseField(raw: string, def: FieldDef): ParsedField {
       end = stepRaw === undefined ? start : def.max
     }
 
-    if (start > end) throw new Error(`${def.label}范围不合法：${part}`)
+    if (start > end) throw new Error(t('{field}范围不合法：{part}', { field: t(def.label), part }))
 
     for (let value = start; value <= end; value += step) values.add(value)
   }
@@ -93,7 +103,9 @@ const parsed = computed(() => {
   const fields = expr.value.trim().split(/\s+/).filter(Boolean)
 
   if (fields.length !== 5) {
-    return { error: `Cron 表达式需要 5 个字段（分 时 日 月 周），当前 ${fields.length} 个` }
+    return {
+      error: t('Cron 表达式需要 5 个字段（分 时 日 月 周），当前 {n} 个', { n: fields.length }),
+    }
   }
 
   try {
@@ -114,7 +126,7 @@ function pad(value: number) {
 const WEEK_LABELS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 
 function formatDate(date: Date) {
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())} ${WEEK_LABELS[date.getDay()]}`
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())} ${t(WEEK_LABELS[date.getDay()])}`
 }
 
 const nextRuns = computed(() => {
@@ -176,14 +188,17 @@ const fieldSummary = computed(() => {
     const field = fields[def.key]
     const values =
       field.values.length > 12
-        ? `${field.values.slice(0, 12).join(', ')} …（共 ${field.values.length} 个）`
+        ? t('{list} …（共 {n} 个）', {
+            list: field.values.slice(0, 12).join(', '),
+            n: field.values.length,
+          })
         : field.values.join(', ')
 
     let meaning = values
     if (field.raw === '*') {
-      meaning = `每个${def.label}`
+      meaning = t('每个{field}', { field: t(def.label) })
     } else if (/^\*\/\d+$/.test(field.raw)) {
-      meaning = `每 ${field.raw.slice(2)} ${def.label}`
+      meaning = t('每 {step} {field}', { step: field.raw.slice(2), field: t(def.label) })
     }
 
     return {
@@ -198,7 +213,7 @@ const fieldSummary = computed(() => {
 <template>
   <section class="panel">
     <label class="field">
-      <span class="label">Cron 表达式（分 时 日 月 周）</span>
+      <span class="label">{{ t('Cron 表达式（分 时 日 月 周）') }}</span>
       <input v-model="expr" class="input mono" type="text" spellcheck="false" />
     </label>
 
@@ -210,7 +225,7 @@ const fieldSummary = computed(() => {
         type="button"
         @click="expr = preset.value"
       >
-        {{ preset.label }}
+        {{ t(preset.label) }}
       </button>
     </div>
 
@@ -221,14 +236,14 @@ const fieldSummary = computed(() => {
         <table class="table">
           <thead>
             <tr>
-              <th>字段</th>
-              <th>取值</th>
-              <th>含义</th>
+              <th>{{ t('字段') }}</th>
+              <th>{{ t('取值') }}</th>
+              <th>{{ t('含义') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in fieldSummary" :key="row.label">
-              <td>{{ row.label }}</td>
+              <td>{{ t(row.label) }}</td>
               <td class="mono">{{ row.raw }}</td>
               <td class="muted">{{ row.meaning }}</td>
             </tr>
@@ -237,17 +252,17 @@ const fieldSummary = computed(() => {
       </div>
 
       <div class="field">
-        <span class="label">接下来 5 次执行时间（本地时区）</span>
+        <span class="label">{{ t('接下来 5 次执行时间（本地时区）') }}</span>
         <ol class="runs">
           <li v-for="run in nextRuns" :key="run.getTime()" class="mono">{{ formatDate(run) }}</li>
         </ol>
-        <p v-if="!nextRuns.length" class="hint">未来 400 天内没有匹配的执行时间。</p>
+        <p v-if="!nextRuns.length" class="hint">{{ t('未来 400 天内没有匹配的执行时间。') }}</p>
       </div>
     </template>
 
     <p class="hint">
-      支持 <code class="mono">*</code>、<code class="mono">*/n</code>、<code class="mono">a-b</code>、
-      <code class="mono">a-b/n</code>、<code class="mono">a,b</code>，月份与星期支持 JAN / MON 这类英文缩写。
+      {{ t('支持') }} <code class="mono">*</code>、<code class="mono">*/n</code>、<code class="mono">a-b</code>、
+      <code class="mono">a-b/n</code>、<code class="mono">a,b</code>{{ t('，月份与星期支持 JAN / MON 这类英文缩写。') }}
     </p>
   </section>
 </template>

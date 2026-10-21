@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import QRCode from 'qrcode'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const text = ref('https://example.com')
 const size = ref(256)
@@ -13,7 +16,7 @@ async function render() {
   if (!canvas.value) return
 
   if (!text.value.trim()) {
-    error.value = '请输入要生成二维码的文本'
+    error.value = t('请输入要生成二维码的文本')
     dataUrl.value = ''
     return
   }
@@ -41,18 +44,18 @@ watch([text, size, level], render)
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">内容</span>
+        <span class="label">{{ t('内容') }}</span>
         <textarea
           v-model="text"
           class="textarea"
-          placeholder="输入网址或任意文本"
+          :placeholder="t('输入网址或任意文本')"
           spellcheck="false"
         />
       </label>
 
       <div class="cols">
         <label class="field">
-          <span class="label">尺寸（px）</span>
+          <span class="label">{{ t('尺寸（px）') }}</span>
           <select v-model.number="size" class="select">
             <option :value="160">160 × 160</option>
             <option :value="256">256 × 256</option>
@@ -62,7 +65,7 @@ watch([text, size, level], render)
         </label>
 
         <label class="field">
-          <span class="label">容错级别</span>
+          <span class="label">{{ t('容错级别') }}</span>
           <select v-model="level" class="select">
             <option value="L">L（7%）</option>
             <option value="M">M（15%）</option>
@@ -74,7 +77,7 @@ watch([text, size, level], render)
 
       <div class="row">
         <a v-if="dataUrl" class="btn btn--primary" :href="dataUrl" download="qrcode.png">
-          下载 PNG
+          {{ t('下载 PNG') }}
         </a>
       </div>
 
@@ -85,7 +88,7 @@ watch([text, size, level], render)
       <div class="qr-box">
         <canvas ref="canvas" />
       </div>
-      <p class="hint">容错级别越高，二维码越密集但越耐遮挡。</p>
+      <p class="hint">{{ t('容错级别越高，二维码越密集但越耐遮挡。') }}</p>
     </section>
   </div>
 </template>

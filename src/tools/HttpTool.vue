@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const search = ref('')
 
@@ -57,7 +60,10 @@ const filtered = computed(() => {
   const query = search.value.trim().toLowerCase()
   if (!query) return codes
   return codes.filter((item) =>
-    [String(item.code), item.name, item.group, item.note].join(' ').toLowerCase().includes(query),
+    [String(item.code), item.name, t(item.group), t(item.note)]
+      .join(' ')
+      .toLowerCase()
+      .includes(query),
   )
 })
 </script>
@@ -65,28 +71,28 @@ const filtered = computed(() => {
 <template>
   <section class="panel">
     <label class="field">
-      <span class="label">搜索状态码 / 关键字</span>
-      <input v-model="search" class="input" type="search" placeholder="例如 404、timeout、限流" />
+      <span class="label">{{ t('搜索状态码 / 关键字') }}</span>
+      <input v-model="search" class="input" type="search" :placeholder="t('例如 404、timeout、限流')" />
     </label>
 
-    <p class="hint">共 {{ filtered.length }} 条记录</p>
+    <p class="hint">{{ t('共 {n} 条记录', { n: filtered.length }) }}</p>
 
     <div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th>状态码</th>
-            <th>名称</th>
-            <th>分类</th>
-            <th>说明</th>
+            <th>{{ t('状态码') }}</th>
+            <th>{{ t('名称') }}</th>
+            <th>{{ t('分类') }}</th>
+            <th>{{ t('说明') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in filtered" :key="item.code">
             <td class="mono">{{ item.code }}</td>
             <td>{{ item.name }}</td>
-            <td class="muted">{{ item.group }}</td>
-            <td class="muted">{{ item.note }}</td>
+            <td class="muted">{{ t(item.group) }}</td>
+            <td class="muted">{{ t(item.note) }}</td>
           </tr>
         </tbody>
       </table>

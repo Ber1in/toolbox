@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const pattern = ref('\\d+')
-const text = ref('订单 A1001 金额 299 元，订单 B1002 金额 1580 元。')
+const text = ref(t('订单 A1001 金额 299 元，订单 B1002 金额 1580 元。'))
 const flags = ref<string[]>(['g'])
 
 const flagOptions = [
@@ -20,7 +23,9 @@ const compiled = computed(() => {
   } catch (error) {
     return {
       regex: null,
-      error: `正则不合法：${error instanceof Error ? error.message : String(error)}`,
+      error: t('正则不合法：{message}', {
+        message: error instanceof Error ? error.message : String(error),
+      }),
     }
   }
 })
@@ -78,29 +83,34 @@ const segments = computed(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">正则表达式</span>
+        <span class="label">{{ t('正则表达式') }}</span>
         <input v-model="pattern" class="input mono" type="text" spellcheck="false" />
       </label>
 
       <div class="row">
         <label v-for="flag in flagOptions" :key="flag.key" class="checkbox">
           <input v-model="flags" type="checkbox" :value="flag.key" />
-          {{ flag.label }}
+          {{ t(flag.label) }}
         </label>
       </div>
 
       <p v-if="compiled.error" class="error">{{ compiled.error }}</p>
-      <p v-else class="hint">匹配到 {{ matches.length }} 处{{ matches.length >= 300 ? '（已截断）' : '' }}</p>
+      <p v-else class="hint">
+        {{ t('匹配到 {n} 处{truncated}', {
+          n: matches.length,
+          truncated: matches.length >= 300 ? t('（已截断）') : '',
+        }) }}
+      </p>
     </section>
 
     <section class="panel">
       <label class="field">
-        <span class="label">测试文本</span>
+        <span class="label">{{ t('测试文本') }}</span>
         <textarea v-model="text" class="textarea" spellcheck="false" />
       </label>
 
       <div class="field">
-        <span class="label">匹配高亮</span>
+        <span class="label">{{ t('匹配高亮') }}</span>
         <div class="highlight mono">
           <template v-for="(part, index) in segments" :key="index">
             <mark v-if="part.hit">{{ part.text }}</mark>
@@ -111,22 +121,22 @@ const segments = computed(() => {
     </section>
 
     <section v-if="matches.length" class="panel">
-      <p class="panel__title">匹配明细</p>
+      <p class="panel__title">{{ t('匹配明细') }}</p>
       <div class="table-wrap">
         <table class="table">
           <thead>
             <tr>
               <th>#</th>
-              <th>位置</th>
-              <th>匹配内容</th>
-              <th>分组</th>
+              <th>{{ t('位置') }}</th>
+              <th>{{ t('匹配内容') }}</th>
+              <th>{{ t('分组') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(match, index) in matches" :key="index">
               <td>{{ index + 1 }}</td>
               <td class="mono">{{ match.index }}</td>
-              <td class="mono">{{ match.value || '（空匹配）' }}</td>
+              <td class="mono">{{ match.value || t('（空匹配）') }}</td>
               <td class="mono muted">{{ match.groups.join(' | ') || '-' }}</td>
             </tr>
           </tbody>

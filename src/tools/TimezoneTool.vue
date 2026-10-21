@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t, locale } = useI18n()
 
 const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -28,7 +31,7 @@ const zones = [
 ]
 
 if (!zones.some((zone) => zone.value === localZone)) {
-  zones.unshift({ value: localZone, label: `${localZone}（本机时区）` })
+  zones.unshift({ value: localZone, label: t('{zone}（本机时区）', { zone: localZone }) })
 }
 
 function pad(value: number) {
@@ -79,7 +82,7 @@ function wallTimeToDate(wall: string, timeZone: string) {
 }
 
 function formatInZone(date: Date, timeZone: string) {
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(locale.value === 'zh' ? 'zh-CN' : 'en-GB', {
     timeZone,
     year: 'numeric',
     month: '2-digit',
@@ -128,7 +131,17 @@ const diffLabel = computed(() => {
   const abs = Math.abs(diff)
   const hours = Math.floor(abs)
   const minutes = Math.round((abs - hours) * 60)
-  return `${toZone.value} 比 ${fromZone.value} ${diff === 0 ? '相同' : `${sign === '+' ? '快' : '慢'} ${hours} 小时${minutes ? ` ${minutes} 分` : ''}`}`
+  if (diff === 0) {
+    return t('{to} 与 {from} 相同', { to: toZone.value, from: fromZone.value })
+  }
+
+  return t('{to} 比 {from} {direction} {hours} 小时{minutes}', {
+    to: toZone.value,
+    from: fromZone.value,
+    direction: t(sign === '+' ? '快' : '慢'),
+    hours,
+    minutes: minutes ? t(' {n} 分', { n: minutes }) : '',
+  })
 })
 </script>
 
@@ -136,25 +149,25 @@ const diffLabel = computed(() => {
   <section class="panel">
     <div class="cols">
       <label class="field">
-        <span class="label">时间</span>
+        <span class="label">{{ t('时间') }}</span>
         <input v-model="wall" class="input" type="datetime-local" />
       </label>
 
       <div class="field">
-        <span class="label">源时区</span>
+        <span class="label">{{ t('源时区') }}</span>
         <select v-model="fromZone" class="select">
           <option v-for="zone in zones" :key="zone.value" :value="zone.value">
-            {{ zone.label }}
+            {{ t(zone.label) }}
           </option>
         </select>
       </div>
     </div>
 
     <div class="field">
-      <span class="label">目标时区</span>
+      <span class="label">{{ t('目标时区') }}</span>
       <select v-model="toZone" class="select">
         <option v-for="zone in zones" :key="zone.value" :value="zone.value">
-          {{ zone.label }}
+          {{ t(zone.label) }}
         </option>
       </select>
     </div>
@@ -173,7 +186,7 @@ const diffLabel = computed(() => {
         <span class="stat__value">{{ result.utc }}</span>
       </div>
       <div class="stat">
-        <span class="stat__label">Unix 时间戳</span>
+        <span class="stat__label">{{ t('Unix 时间戳') }}</span>
         <span class="stat__value">{{ result.epoch }}</span>
       </div>
     </div>
@@ -181,8 +194,8 @@ const diffLabel = computed(() => {
     <p v-if="diffLabel" class="hint">{{ diffLabel }}</p>
 
     <div class="row">
-      <CopyButton :text="result?.to ?? ''" label="复制目标时间" />
-      <CopyButton :text="result ? String(result.epoch) : ''" label="复制时间戳" />
+      <CopyButton :text="result?.to ?? ''" :label="t('复制目标时间')" />
+      <CopyButton :text="result ? String(result.epoch) : ''" :label="t('复制时间戳')" />
     </div>
   </section>
 </template>

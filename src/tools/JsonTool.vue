@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const input = ref('')
 const mode = ref<'format' | 'minify'>('format')
 const indent = ref(2)
@@ -16,12 +18,14 @@ const result = computed(() => {
     return {
       value,
       error: '',
-      stats: `${lines} 行 · ${new Blob([value]).size} 字节`,
+      stats: t('{lines} 行 · {size} 字节', { lines, size: new Blob([value]).size }),
     }
   } catch (error) {
     return {
       value: '',
-      error: `JSON 解析失败：${error instanceof Error ? error.message : String(error)}`,
+      error: t('JSON 解析失败：{message}', {
+        message: error instanceof Error ? error.message : String(error),
+      }),
       stats: '',
     }
   }
@@ -37,35 +41,35 @@ const result = computed(() => {
           type="button"
           @click="mode = 'format'"
         >
-          格式化
+          {{ t('格式化') }}
         </button>
         <button
           :class="{ 'is-active': mode === 'minify' }"
           type="button"
           @click="mode = 'minify'"
         >
-          压缩
+          {{ t('压缩') }}
         </button>
       </div>
 
       <label v-if="mode === 'format'" class="checkbox">
         <input v-model.number="indent" type="radio" :value="2" />
-        2 空格
+        {{ t('2 空格') }}
       </label>
       <label v-if="mode === 'format'" class="checkbox">
         <input v-model.number="indent" type="radio" :value="4" />
-        4 空格
+        {{ t('4 空格') }}
       </label>
 
       <span v-if="result.stats" class="hint">{{ result.stats }}</span>
     </div>
 
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea
         v-model="input"
         class="textarea"
-        placeholder='粘贴 JSON，例如：{"name":"toolbox","tools":[1,2,3]}'
+        :placeholder="t('粘贴 JSON，例如：{&quot;name&quot;:&quot;toolbox&quot;,&quot;tools&quot;:[1,2,3]}')"
         spellcheck="false"
       />
     </label>
@@ -74,12 +78,12 @@ const result = computed(() => {
       <div class="row row--end">
         <CopyButton :text="result.value" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result.value }}</pre>
       <p v-if="result.error" class="error">{{ result.error }}</p>
-      <p v-else-if="input.trim()" class="hint">JSON 合法 ✓</p>
+      <p v-else-if="input.trim()" class="hint">{{ t('JSON 合法 ✓') }}</p>
     </div>
   </section>
 </template>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const length = ref(16)
 const useUpper = ref(true)
@@ -85,12 +88,12 @@ generate()
     <section class="panel">
       <div class="cols">
         <label class="field">
-          <span class="label">密码长度：{{ length }}</span>
+          <span class="label">{{ t('密码长度：{n}', { n: length }) }}</span>
           <input v-model.number="length" type="range" min="4" max="64" step="1" />
         </label>
 
         <label class="field">
-          <span class="label">生成数量</span>
+          <span class="label">{{ t('生成数量') }}</span>
           <input v-model.number="count" class="input" type="number" min="1" max="20" />
         </label>
       </div>
@@ -98,23 +101,23 @@ generate()
       <div class="row">
         <label class="checkbox">
           <input v-model="useUpper" type="checkbox" />
-          大写字母
+          {{ t('大写字母') }}
         </label>
         <label class="checkbox">
           <input v-model="useLower" type="checkbox" />
-          小写字母
+          {{ t('小写字母') }}
         </label>
         <label class="checkbox">
           <input v-model="useDigits" type="checkbox" />
-          数字
+          {{ t('数字') }}
         </label>
         <label class="checkbox">
           <input v-model="useSymbols" type="checkbox" />
-          符号
+          {{ t('符号') }}
         </label>
         <label class="checkbox">
           <input v-model="excludeAmbiguous" type="checkbox" />
-          排除易混淆字符
+          {{ t('排除易混淆字符') }}
         </label>
       </div>
 
@@ -122,24 +125,24 @@ generate()
         <div class="strength__bar">
           <span class="strength__fill" :style="{ width: `${strength.percent}%` }" />
         </div>
-        <span class="hint">强度：{{ strength.label }}（约 {{ entropy }} bit 熵）</span>
+        <span class="hint">{{ t('强度：{label}（约 {n} bit 熵）', { label: t(strength.label), n: entropy }) }}</span>
       </div>
 
       <div class="row">
         <button class="btn btn--primary" type="button" :disabled="!alphabet" @click="generate">
-          重新生成
+          {{ t('重新生成') }}
         </button>
-        <CopyButton :text="passwords.join('\n')" label="复制全部" />
+        <CopyButton :text="passwords.join('\n')" :label="t('复制全部')" />
       </div>
 
-      <p v-if="!alphabet" class="error">至少选择一类字符。</p>
-      <p class="hint">使用浏览器 crypto 随机数生成，不会上传。</p>
+      <p v-if="!alphabet" class="error">{{ t('至少选择一类字符。') }}</p>
+      <p class="hint">{{ t('使用浏览器 crypto 随机数生成，不会上传。') }}</p>
     </section>
 
     <section v-if="passwords.length" class="panel">
       <div v-for="(password, index) in passwords" :key="index" class="password-row">
         <code class="password">{{ password }}</code>
-        <CopyButton :text="password" label="复制" />
+        <CopyButton :text="password" :label="t('复制')" />
       </div>
     </section>
   </div>

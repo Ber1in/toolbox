@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const input = ref('')
 const find = ref('')
@@ -28,7 +31,9 @@ const result = computed(() => {
     return {
       value: '',
       count: 0,
-      error: `正则不合法：${error instanceof Error ? error.message : String(error)}`,
+      error: t('正则不合法：{message}', {
+        message: error instanceof Error ? error.message : String(error),
+      }),
     }
   }
 })
@@ -38,31 +43,31 @@ const result = computed(() => {
   <section class="panel">
     <div class="cols">
       <label class="field">
-        <span class="label">查找</span>
-        <input v-model="find" class="input" type="text" placeholder="要查找的内容" />
+        <span class="label">{{ t('查找') }}</span>
+        <input v-model="find" class="input" type="text" :placeholder="t('要查找的内容')" />
       </label>
 
       <label class="field">
-        <span class="label">替换为</span>
-        <input v-model="replacement" class="input" type="text" placeholder="留空表示删除" />
+        <span class="label">{{ t('替换为') }}</span>
+        <input v-model="replacement" class="input" type="text" :placeholder="t('留空表示删除')" />
       </label>
     </div>
 
     <div class="row">
       <label class="checkbox">
         <input v-model="useRegex" type="checkbox" />
-        使用正则表达式
+        {{ t('使用正则表达式') }}
       </label>
       <label class="checkbox">
         <input v-model="ignoreCase" type="checkbox" />
-        忽略大小写
+        {{ t('忽略大小写') }}
       </label>
-      <span v-if="find" class="hint">替换 {{ result.count }} 处</span>
+      <span v-if="find" class="hint">{{ t('替换 {n} 处', { n: result.count }) }}</span>
     </div>
 
     <label class="field">
-      <span class="label">原文</span>
-      <textarea v-model="input" class="textarea" placeholder="粘贴需要替换的文本" spellcheck="false" />
+      <span class="label">{{ t('原文') }}</span>
+      <textarea v-model="input" class="textarea" :placeholder="t('粘贴需要替换的文本')" spellcheck="false" />
     </label>
 
     <div class="field">
@@ -74,7 +79,7 @@ const result = computed(() => {
           :disabled="!input"
           @click="(input = ''), (find = ''), (replacement = '')"
         >
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result.value }}</pre>

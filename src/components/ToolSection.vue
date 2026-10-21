@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import ToolCard from './ToolCard.vue'
 import type { Tool, ToolCategory } from '../data/toolbox'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 defineProps<{
   category: ToolCategory
@@ -19,7 +22,7 @@ const emit = defineEmits<{ (e: 'toggle-favorite', id: string): void }>()
     :aria-labelledby="`heading-${category.key}`"
   >
     <h2 :id="`heading-${category.key}`" class="section__title">
-      {{ category.label }}
+      {{ t(category.label) }}
     </h2>
 
     <div class="grid">

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import CopyButton from '../components/tool/CopyButton.vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 type Mode =
   | 'upper'
@@ -73,11 +76,11 @@ const result = computed(() => {
 <template>
   <section class="panel">
     <label class="field">
-      <span class="label">输入</span>
+      <span class="label">{{ t('输入') }}</span>
       <textarea
         v-model="input"
         class="textarea"
-        placeholder="输入文本，例如：hello world"
+        :placeholder="t('输入文本，例如：hello world')"
         spellcheck="false"
       />
     </label>
@@ -91,7 +94,7 @@ const result = computed(() => {
         type="button"
         @click="mode = item.key"
       >
-        {{ item.label }}
+        {{ t(item.label) }}
       </button>
     </div>
 
@@ -99,7 +102,7 @@ const result = computed(() => {
       <div class="row row--end">
         <CopyButton :text="result" />
         <button class="btn btn--sm" type="button" :disabled="!input" @click="input = ''">
-          清空
+          {{ t('清空') }}
         </button>
       </div>
       <pre class="output output--tall">{{ result }}</pre>

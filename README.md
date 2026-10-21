@@ -40,6 +40,18 @@ npm run preview  # 预览构建产物
 
 除字体与上述解析库外没有 UI 框架，所有间距、圆角、字号、颜色均来自设计令牌，没有散落的硬编码值。
 
+## 多语言（中文 / English）
+
+导航栏右侧的语言选择器可以随时切换界面语言，切换即时生效、无需刷新：
+
+- **默认语言**：优先读取 `localStorage` 中的 `toolbox:locale`；没有记录时按浏览器语言判断（`zh*` → 中文，其它 → English）
+- **持久化**：选择结果写入 `localStorage`（`toolbox:locale`），同时更新 `<html lang>` 与页面标题 / 描述
+- **覆盖范围**：导航、Hero、分类、工具卡、页脚、34 个工具页的标签 / 提示 / 错误信息 / 表格内容，以及 `Intl` 的相对时间与时区格式
+- **实现**：轻量自研 i18n（无 `vue-i18n` 依赖），中文原文即字典 key，英文查 `src/i18n/en.ts`；缺失译文时英文界面回退显示中文原文，不会出现 key 或空白
+- **新增译文**：在 `src/i18n/en.ts` 中加一行 `'中文原文': 'English text'`；带变量的文案用 `{name}` 占位符（例如 `'共 {n} 个工具': '{n} tools'`），组件里调用 `t('共 {n} 个工具', { n })`
+- **离线**：语言包随 bundle 打包，不请求任何翻译接口或远程资源
+- 中文界面仍严格保持设计稿尺寸（首页总高 3551px、卡片 310×150）；英文文案较长时卡片与 Hero 会自然增高，避免文字被截断
+
 ## 路由
 
 | 路径 | 说明 |
@@ -80,6 +92,7 @@ src/
 │   └── tool/          工具页通用组件（复制按钮）
 ├── composables/       useTheme / useFavorites / useCopy
 ├── data/toolbox.ts    7 大类 34 个工具的唯一数据源（名称、描述、图标）
+├── i18n/              index.ts（语言状态 / t() / 检测与持久化）、en.ts（英文词典）
 ├── router/            路由与滚动行为
 ├── styles/            tokens.css（设计令牌 + 深色主题）、base.css、tool.css
 ├── tools/             34 个工具组件 + registry.ts（id → 组件映射）
@@ -102,4 +115,4 @@ src/
 
 ## 隐私
 
-所有计算都在浏览器本地完成，不发送任何请求、不需要登录。收藏与主题偏好仅存于 `localStorage`（`toolbox:favorites`、`toolbox:theme`）。
+所有计算都在浏览器本地完成，不发送任何请求、不需要登录。收藏、主题偏好与语言选择仅存于 `localStorage`（`toolbox:favorites`、`toolbox:theme`、`toolbox:locale`）。

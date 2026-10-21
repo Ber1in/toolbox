@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const file = ref<File | null>(null)
 const originalUrl = ref('')
@@ -23,7 +26,7 @@ function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
     image.onload = () => resolve(image)
-    image.onerror = () => reject(new Error('图片加载失败'))
+    image.onerror = () => reject(new Error(t('图片加载失败')))
     image.src = src
   })
 }
@@ -49,7 +52,7 @@ async function process() {
     canvas.height = height
 
     const context = canvas.getContext('2d')
-    if (!context) throw new Error('当前浏览器不支持 Canvas')
+    if (!context) throw new Error(t('当前浏览器不支持 Canvas'))
 
     context.drawImage(image, 0, 0, width, height)
 
@@ -57,7 +60,7 @@ async function process() {
       canvas.toBlob(resolve, format.value, quality.value),
     )
 
-    if (!blob) throw new Error('压缩失败')
+    if (!blob) throw new Error(t('压缩失败'))
 
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
     resultUrl.value = URL.createObjectURL(blob)
@@ -74,7 +77,7 @@ async function onFileChange(event: Event) {
   if (!selected) return
 
   if (!selected.type.startsWith('image/')) {
-    error.value = '请选择图片文件'
+    error.value = t('请选择图片文件')
     return
   }
 
@@ -109,18 +112,18 @@ onBeforeUnmount(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">选择图片</span>
+        <span class="label">{{ t('选择图片') }}</span>
         <input class="input" type="file" accept="image/*" @change="onFileChange" />
       </label>
 
       <div class="cols">
         <label class="field">
-          <span class="label">质量 {{ Math.round(quality * 100) }}%</span>
+          <span class="label">{{ t('质量 {n}%', { n: Math.round(quality * 100) }) }}</span>
           <input v-model.number="quality" type="range" min="0.1" max="1" step="0.05" />
         </label>
 
         <label class="field">
-          <span class="label">最大宽度（px，0 表示原始尺寸）</span>
+          <span class="label">{{ t('最大宽度（px，0 表示原始尺寸）') }}</span>
           <input v-model.number="maxWidth" class="input" type="number" min="0" step="10" />
         </label>
       </div>
@@ -144,40 +147,40 @@ onBeforeUnmount(() => {
         </div>
 
         <button class="btn btn--primary" type="button" :disabled="!file || loading" @click="process">
-          {{ loading ? '处理中…' : '开始压缩' }}
+          {{ t(loading ? '处理中…' : '开始压缩') }}
         </button>
 
-        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">下载</a>
+        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">{{ t('下载') }}</a>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
-      <p class="hint">图片只在浏览器本地处理，不会上传到服务器。</p>
+      <p class="hint">{{ t('图片只在浏览器本地处理，不会上传到服务器。') }}</p>
     </section>
 
     <section v-if="resultUrl" class="panel">
       <div class="stat-grid">
         <div class="stat">
-          <span class="stat__label">原始大小</span>
+          <span class="stat__label">{{ t('原始大小') }}</span>
           <span class="stat__value">{{ formatBytes(originalSize) }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">压缩后大小</span>
+          <span class="stat__label">{{ t('压缩后大小') }}</span>
           <span class="stat__value">{{ formatBytes(resultSize) }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">体积变化</span>
-          <span class="stat__value">{{ savedPercent > 0 ? `-${savedPercent}%` : '未减小' }}</span>
+          <span class="stat__label">{{ t('体积变化') }}</span>
+          <span class="stat__value">{{ savedPercent > 0 ? `-${savedPercent}%` : t('未减小') }}</span>
         </div>
       </div>
 
       <div class="previews">
         <figure class="preview">
-          <img :src="originalUrl" alt="原图预览" />
-          <figcaption class="hint">原图</figcaption>
+          <img :src="originalUrl" :alt="t('原图预览')" />
+          <figcaption class="hint">{{ t('原图') }}</figcaption>
         </figure>
         <figure class="preview">
-          <img :src="resultUrl" alt="压缩结果预览" />
-          <figcaption class="hint">压缩后</figcaption>
+          <img :src="resultUrl" :alt="t('压缩结果预览')" />
+          <figcaption class="hint">{{ t('压缩后') }}</figcaption>
         </figure>
       </div>
     </section>

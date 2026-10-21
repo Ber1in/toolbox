@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
+import { useI18n } from '../i18n'
+
+const { t } = useI18n()
 
 const file = ref<File | null>(null)
 const sourceUrl = ref('')
@@ -21,7 +24,7 @@ function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
     image.onload = () => resolve(image)
-    image.onerror = () => reject(new Error('图片加载失败'))
+    image.onerror = () => reject(new Error(t('图片加载失败')))
     image.src = src
   })
 }
@@ -39,7 +42,7 @@ async function convert() {
     canvas.height = image.naturalHeight
 
     const context = canvas.getContext('2d')
-    if (!context) throw new Error('当前浏览器不支持 Canvas')
+    if (!context) throw new Error(t('当前浏览器不支持 Canvas'))
 
     if (format.value === 'image/jpeg') {
       // JPEG 无透明通道，先铺白底
@@ -52,7 +55,7 @@ async function convert() {
     const blob = await new Promise<Blob | null>((resolve) =>
       canvas.toBlob(resolve, format.value, quality.value),
     )
-    if (!blob) throw new Error('转换失败，当前浏览器可能不支持该格式')
+    if (!blob) throw new Error(t('转换失败，当前浏览器可能不支持该格式'))
 
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
     resultUrl.value = URL.createObjectURL(blob)
@@ -69,7 +72,7 @@ function onFileChange(event: Event) {
   if (!selected) return
 
   if (!selected.type.startsWith('image/')) {
-    error.value = '请选择图片文件'
+    error.value = t('请选择图片文件')
     return
   }
 
@@ -102,31 +105,31 @@ onBeforeUnmount(() => {
   <div class="stack">
     <section class="panel">
       <label class="field">
-        <span class="label">选择图片</span>
+        <span class="label">{{ t('选择图片') }}</span>
         <input class="input" type="file" accept="image/*" @change="onFileChange" />
       </label>
 
       <div class="cols">
         <label class="field">
-          <span class="label">目标格式</span>
+          <span class="label">{{ t('目标格式') }}</span>
           <select v-model="format" class="select" @change="convert">
-            <option value="image/png">PNG（支持透明）</option>
-            <option value="image/jpeg">JPEG（有损，体积小）</option>
-            <option value="image/webp">WebP（现代浏览器）</option>
+            <option value="image/png">{{ t('PNG（支持透明）') }}</option>
+            <option value="image/jpeg">{{ t('JPEG（有损，体积小）') }}</option>
+            <option value="image/webp">{{ t('WebP（现代浏览器）') }}</option>
           </select>
         </label>
 
         <label v-if="format !== 'image/png'" class="field">
-          <span class="label">质量 {{ Math.round(quality * 100) }}%</span>
+          <span class="label">{{ t('质量 {n}%', { n: Math.round(quality * 100) }) }}</span>
           <input v-model.number="quality" type="range" min="0.1" max="1" step="0.05" />
         </label>
       </div>
 
       <div class="row">
         <button class="btn btn--primary" type="button" :disabled="!file || loading" @click="convert">
-          {{ loading ? '转换中…' : '转换' }}
+          {{ t(loading ? '转换中…' : '转换') }}
         </button>
-        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">下载</a>
+        <a v-if="resultUrl" class="btn" :href="resultUrl" :download="downloadName">{{ t('下载') }}</a>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
@@ -135,20 +138,20 @@ onBeforeUnmount(() => {
     <section v-if="resultUrl" class="panel">
       <div class="stat-grid">
         <div class="stat">
-          <span class="stat__label">原始大小</span>
+          <span class="stat__label">{{ t('原始大小') }}</span>
           <span class="stat__value">{{ formatBytes(file?.size ?? 0) }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">转换后大小</span>
+          <span class="stat__label">{{ t('转换后大小') }}</span>
           <span class="stat__value">{{ formatBytes(resultSize) }}</span>
         </div>
         <div class="stat">
-          <span class="stat__label">输出格式</span>
+          <span class="stat__label">{{ t('输出格式') }}</span>
           <span class="stat__value">{{ extension.toUpperCase() }}</span>
         </div>
       </div>
 
-      <img class="result" :src="resultUrl" alt="转换结果预览" />
+      <img class="result" :src="resultUrl" :alt="t('转换结果预览')" />
     </section>
   </div>
 </template>
