@@ -4,9 +4,7 @@
 
 [中文](#中文) | **English**
 
-A **Vite + Vue 3 + TypeScript** implementation of the Ardot design “Developer Toolbox / 工具盒 Toolbox”.
-
-The home page reproduces the design (7 tool categories) and adds a “Number Base Converter” to the original 33 tools, for **34 fully working tools**. Every tool has its own shareable route and supports browser back / forward.
+A **Vite + Vue 3 + TypeScript** developer toolbox with **34 fully working tools** across 7 categories. Every tool has its own shareable route and supports browser back / forward.
 
 ## Run
 
@@ -54,7 +52,7 @@ The language selector on the right side of the nav switches the UI instantly, wi
 - **Implementation**: a small in-house i18n layer (no `vue-i18n` dependency). The Chinese source string is the dictionary key and English lives in `src/i18n/en.ts`; missing translations fall back to Chinese rather than showing a raw key or blank text
 - **Adding translations**: add a line such as `'中文原文': 'English text'` to `src/i18n/en.ts`. Use `{name}` placeholders for variables (e.g. `'共 {n} 个工具': '{n} tools'`) and call `t('共 {n} 个工具', { n })` from components
 - **Offline**: language data ships in the bundle; no translation API or remote resource is requested
-- The Chinese UI keeps the exact design dimensions (home page 3551px tall, cards 310×150). Longer English copy lets cards and the hero grow naturally so nothing is clipped
+- Longer English copy lets cards and the hero grow naturally so nothing is clipped
 
 ## Routes
 
@@ -105,18 +103,6 @@ src/
 
 To add a tool: add an entry to the right category in `src/data/toolbox.ts`, create a tool component, and register it in `src/tools/registry.ts`.
 
-## Differences from the design
-
-The design only covers the home page. The following parts are reasonable extensions and are noted in the implementation:
-
-1. **Icons**: Ardot MCP does not expose VECTOR geometry, so icons approximate the originals with the closest lucide shapes (see the comment above `toolCategories` in `src/data/toolbox.ts`).
-2. **Dark theme**: the design only has a light theme; dark values are derived from the existing tokens (`[data-theme='dark']` in `tokens.css`) while preserving contrast.
-3. **Favorites**: the design has no star. The star in the top-right corner of each card is hidden by default and appears on hover / keyboard focus; favorites are stored in `localStorage` and do not affect the original card size or visuals.
-4. **Tool pages**: the design has no detail pages. Their visual language (`.panel`, `.field`, `.btn`, `.stat`, `.table`) is derived entirely from the home page tokens.
-5. **1px strokes**: Ardot strokes do not consume layout, so card / tab strokes use `inset box-shadow`, keeping cards at 310×150 and tabs at 96px tall.
-6. **Inconsistencies in the design itself**: the home page subtitle says “40+” but the original has only 33 cards; the last card uses `hug_contents`; “Format” and “Generators” reuse the same green. All of these are preserved as-is.
-7. **The added “Number Base Converter”**: this tool is not in the original design. Its card follows the same spec (310×150, same icon background) and is inserted into the Encoding category, keeping the home page at 3551px tall.
-
 ## Privacy
 
 All computation happens locally in the browser. No requests are sent and no login is required. Favorites, theme preference and language choice are stored only in `localStorage` (`toolbox:favorites`, `toolbox:theme`, `toolbox:locale`).
@@ -129,9 +115,7 @@ All computation happens locally in the browser. No requests are sent and no logi
 
 **中文** | [English](#english)
 
-Ardot 设计稿「开发者工具箱 / 工具盒 Toolbox」的 **Vite + Vue 3 + TypeScript** 实现。
-
-首页按设计稿还原（7 大类工具卡），并在原稿 33 个工具的基础上新增了「进制转换」，共 **34 个工具全部可用**：每个工具都有独立的可分享路由页面，支持浏览器前进 / 后退。
+基于 **Vite + Vue 3 + TypeScript** 的开发者工具箱，7 大类共 **34 个工具全部可用**：每个工具都有独立的可分享路由页面，支持浏览器前进 / 后退。
 
 ## 运行
 
@@ -179,7 +163,7 @@ npm run preview  # 预览构建产物
 - **实现**：轻量自研 i18n（无 `vue-i18n` 依赖），中文原文即字典 key，英文查 `src/i18n/en.ts`；缺失译文时英文界面回退显示中文原文，不会出现 key 或空白
 - **新增译文**：在 `src/i18n/en.ts` 中加一行 `'中文原文': 'English text'`；带变量的文案用 `{name}` 占位符（例如 `'共 {n} 个工具': '{n} tools'`），组件里调用 `t('共 {n} 个工具', { n })`
 - **离线**：语言包随 bundle 打包，不请求任何翻译接口或远程资源
-- 中文界面仍严格保持设计稿尺寸（首页总高 3551px、卡片 310×150）；英文文案较长时卡片与 Hero 会自然增高，避免文字被截断
+- 英文文案较长时卡片与 Hero 会自然增高，避免文字被截断
 
 ## 路由
 
@@ -229,18 +213,6 @@ src/
 ```
 
 新增工具：在 `src/data/toolbox.ts` 对应分类里加一条记录，写一个工具组件，再到 `src/tools/registry.ts` 注册即可。
-
-## 与设计稿的差异
-
-设计稿只覆盖首页，以下部分为合理延伸，已在实现中标注：
-
-1. **图标**：Ardot MCP 不暴露 VECTOR 的几何数据，图标用 lucide 中语义最接近的图形近似（说明见 `src/data/toolbox.ts` 中 `toolCategories` 上方的注释）。
-2. **深色主题**：设计稿只有浅色，深色由现有令牌推导（`tokens.css` 中 `[data-theme='dark']`），并保持对比度。
-3. **收藏功能**：设计稿没有星标。卡片右上角的星标默认隐藏，悬停 / 键盘聚焦才出现，收藏写入 `localStorage`，不影响卡片原始尺寸与视觉。
-4. **工具详情页**：设计稿没有详情页，视觉语言（`.panel`、`.field`、`.btn`、`.stat`、`.table`）全部复用首页令牌推导。
-5. **1px 描边**：Ardot 的 stroke 不占布局，因此卡片 / Tab 的描边用 `inset box-shadow` 实现，保证卡片仍是 310×150、Tab 高度仍是 96px。
-6. **设计稿自身的不一致**：首页副标题写「40+」但原稿只有 33 张卡片；最后一张卡片使用 `hug_contents`；「格式化」与「离线生成」复用了同一个绿色。这些均按原稿保留，未擅自改动。
-7. **新增的「进制转换」**：原稿没有这个工具，卡片按同一套规格（310×150、同款图标底色）插入「编码转换」分类，首页总高仍为 3551px。
 
 ## 隐私
 
