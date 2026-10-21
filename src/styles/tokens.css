@@ -1,0 +1,154 @@
+/**
+ * Design tokens —— 数值全部取自 Ardot 设计文件 738797806192609「工具盒 Toolbox」。
+ * 命名按用途而非具体颜色值，便于后续换肤 / 换品牌色。
+ */
+:root {
+  color-scheme: light;
+
+  /* ---------- 基础色 ---------- */
+  --color-bg: #ffffff; /* 导航栏 / Hero / 页面底色 */
+  --color-card: #ffffff; /* 工具卡底色 */
+  --color-surface: #f9f9fb; /* 工具内容区底色 */
+  --color-chip: #f7f7f7; /* 主题切换按钮、⌘K 提示底色 */
+  --color-border: #e7e7ea; /* 卡片 / Tab / 搜索框描边 */
+
+  /* ---------- 文字 ---------- */
+  --color-ink: #111111; /* 主标题、卡片标题、激活 Tab 底色 */
+  --color-ink-muted: #6b6b6b; /* 副标题、卡片描述、导航未激活项 */
+  --color-ink-subtle: #9a9a9a; /* 搜索占位符、页脚次级文字 */
+  --color-on-ink: #ffffff; /* 深底上的文字 */
+  /* 反色面（GitHub 按钮、激活 Tab）：浅色下是黑底白字，深色下自动反转 */
+  --color-invert-bg: #111111;
+  --color-invert-fg: #ffffff;
+
+  /* ---------- 强调色 ---------- */
+  --color-accent: #5046e5; /* Logo、徽章圆点、图标主色 */
+  --color-accent-soft: #f0eeff; /* 徽章底色 */
+  --color-danger: #e5484d; /* 工具页错误提示 */
+
+  /* ---------- 页脚（固定深色，不随主题反转） ---------- */
+  --color-footer-bg: #111111;
+  --color-footer-heading: #ffffff;
+  --color-footer-muted: #9a9a9a;
+  --color-footer-legal: #6b6b6b;
+
+  /* ---------- 圆角 ---------- */
+  --radius-logo: 8px;
+  --radius-button: 8px; /* GitHub 按钮、主题切换 */
+  --radius-tab: 10px;
+  --radius-icon: 10px; /* 卡片图标框 */
+  --radius-card: 12px;
+  --radius-search: 12px;
+  --radius-chip: 6px; /* ⌘K */
+  --radius-pill: 999px; /* 徽章 */
+
+  /* ---------- 布局尺寸 ---------- */
+  --layout-max: 1440px; /* 设计画布宽度 */
+  --tool-max: 960px; /* 工具详情页内容宽度（设计稿未覆盖，按阅读舒适度取值） */
+  --layout-padding-x: 48px;
+  --nav-height: 72px; /* 导航栏高 */
+  --card-width: 310px;
+  --card-height: 150px;
+  --grid-gap: 24px;
+  --content-gap: 32px; /* 工具内容区各区块间距 */
+  --content-padding-top: 40px;
+  --content-padding-bottom: 96px;
+  --hero-padding-top: 96px;
+  --hero-padding-bottom: 80px;
+  --hero-gap: 24px;
+  --footer-padding-top: 48px;
+  --footer-padding-bottom: 40px;
+  --footer-gap: 32px;
+  --footer-groups-gap: 64px;
+  --search-width: 640px;
+  --search-height: 56px;
+
+  /* ---------- 字体 ---------- */
+  /* 设计稿正文使用 Inter；中文回退到系统字体，避免 Inter 缺字时出现豆腐块 */
+  --font-sans: Inter, system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* 字号 */
+  --fs-hero-title: 64px;
+  --fs-section-title: 24px;
+  --fs-logo: 20px;
+  --fs-subtitle: 20px;
+  --fs-card-title: 17px;
+  --fs-search: 16px;
+  --fs-nav: 15px;
+  --fs-tab: 15px;
+  --fs-footer-logo: 18px;
+  --fs-card-desc: 14px;
+  --fs-footer: 14px;
+  --fs-badge: 13px;
+  --fs-legal: 13px;
+
+  /* 行高：设计稿为 AUTO，实测值（Inter 的 normal ≈ 1.21）在这里写成 px，
+     避免中文回退字体的 normal 行高偏大导致卡片被撑高 */
+  --lh-logo: 24px; /* 20px 标题 */
+  --lh-nav: 18px; /* 15px 导航项 / Tab */
+  --lh-badge: 16px; /* 13px */
+  --lh-hero-title: 77px; /* 64px */
+  --lh-subtitle: 32px; /* 20px，设计显式值 */
+  --lh-section-title: 29px; /* 24px */
+  --lh-card-title: 21px; /* 17px */
+  --lh-card-desc: 17px; /* 14px */
+  --lh-footer-name: 22px; /* 18px */
+  --lh-footer: 17px; /* 14px */
+  --lh-legal: 16px; /* 13px */
+
+  /* ---------- 分类配色（图标框底色 / 图标描边） ---------- */
+  --cat-encoding-bg: #f0eeff;
+  --cat-encoding-fg: #5046e5;
+  --cat-format-bg: #eaf7f0;
+  --cat-format-fg: #10b981;
+  --cat-time-bg: #fff6e8;
+  --cat-time-fg: #f59e0b;
+  --cat-network-bg: #eaf1ff;
+  --cat-network-fg: #5046e5;
+  --cat-text-bg: #f5eeff;
+  --cat-text-fg: #7c3aed;
+  --cat-image-bg: #ffedf0;
+  --cat-image-fg: #ff4d4f;
+  --cat-generate-bg: #eaf7f0;
+  --cat-generate-fg: #10b981;
+}
+
+/**
+ * 深色主题：设计稿只提供了浅色，以下为按同一套 token 结构推导出的深色值
+ * （页面底 #0f0f12 ≈ 页脚 #111 的同色系延伸；分类图标底色用图标主色 14% 透明叠底）。
+ */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #0f0f12;
+  --color-card: #17171c;
+  --color-surface: #131318;
+  --color-chip: #1e1e24;
+  --color-border: #2a2a32;
+
+  --color-ink: #f4f4f6;
+  --color-ink-muted: #a3a3ab;
+  --color-ink-subtle: #77777f;
+
+  --color-accent: #8b83ff;
+  --color-accent-soft: #221f3d;
+  --color-danger: #ff6b6b;
+
+  --color-invert-bg: #f4f4f6;
+  --color-invert-fg: #0f0f12;
+
+  --cat-encoding-bg: color-mix(in srgb, var(--cat-encoding-fg) 16%, transparent);
+  --cat-format-bg: color-mix(in srgb, var(--cat-format-fg) 16%, transparent);
+  --cat-time-bg: color-mix(in srgb, var(--cat-time-fg) 16%, transparent);
+  --cat-network-bg: color-mix(in srgb, var(--cat-network-fg) 16%, transparent);
+  --cat-text-bg: color-mix(in srgb, var(--cat-text-fg) 16%, transparent);
+  --cat-image-bg: color-mix(in srgb, var(--cat-image-fg) 16%, transparent);
+  --cat-generate-bg: color-mix(in srgb, var(--cat-generate-fg) 16%, transparent);
+}
