@@ -1,56 +1,57 @@
 /**
- * Design tokens —— 数值全部取自 Ardot 设计文件 738797806192609「工具盒 Toolbox」。
- * 命名按用途而非具体颜色值，便于后续换肤 / 换品牌色。
+ * Design tokens — every value comes from the Ardot design file 738797806192609 "Toolbox".
+ * Tokens are named by purpose rather than raw color value to make theming and
+ * rebranding straightforward.
  */
 :root {
   color-scheme: light;
 
-  /* ---------- 基础色 ---------- */
-  --color-bg: #ffffff; /* 导航栏 / Hero / 页面底色 */
-  --color-card: #ffffff; /* 工具卡底色 */
-  --color-surface: #f9f9fb; /* 工具内容区底色 */
-  --color-chip: #f7f7f7; /* 主题切换按钮、⌘K 提示底色 */
-  --color-border: #e7e7ea; /* 卡片 / Tab / 搜索框描边 */
+  /* ---------- Base colors ---------- */
+  --color-bg: #ffffff; /* Nav / hero / page background */
+  --color-card: #ffffff; /* Tool card background */
+  --color-surface: #f9f9fb; /* Tool content background */
+  --color-chip: #f7f7f7; /* Theme toggle and ⌘K hint background */
+  --color-border: #e7e7ea; /* Card / tab / search border */
 
-  /* ---------- 文字 ---------- */
-  --color-ink: #111111; /* 主标题、卡片标题、激活 Tab 底色 */
-  --color-ink-muted: #6b6b6b; /* 副标题、卡片描述、导航未激活项 */
-  --color-ink-subtle: #9a9a9a; /* 搜索占位符、页脚次级文字 */
-  --color-on-ink: #ffffff; /* 深底上的文字 */
-  /* 反色面（GitHub 按钮、激活 Tab）：浅色下是黑底白字，深色下自动反转 */
+  /* ---------- Text ---------- */
+  --color-ink: #111111; /* Main title, card title, active tab background */
+  --color-ink-muted: #6b6b6b; /* Subtitle, card description, inactive nav items */
+  --color-ink-subtle: #9a9a9a; /* Search placeholder, secondary footer text */
+  --color-on-ink: #ffffff; /* Text on dark surfaces */
+  /* Inverted surfaces (GitHub button, active tab): dark-on-light flips automatically in dark mode. */
   --color-invert-bg: #111111;
   --color-invert-fg: #ffffff;
 
-  /* ---------- 强调色 ---------- */
-  --color-accent: #5046e5; /* Logo、徽章圆点、图标主色 */
-  --color-accent-soft: #f0eeff; /* 徽章底色 */
-  --color-danger: #e5484d; /* 工具页错误提示 */
+  /* ---------- Accent colors ---------- */
+  --color-accent: #5046e5; /* Logo, badge dot, primary icon color */
+  --color-accent-soft: #f0eeff; /* Badge background */
+  --color-danger: #e5484d; /* Tool page error text */
 
-  /* ---------- 页脚（固定深色，不随主题反转） ---------- */
+  /* ---------- Footer (always dark, does not flip with the theme) ---------- */
   --color-footer-bg: #111111;
   --color-footer-heading: #ffffff;
   --color-footer-muted: #9a9a9a;
   --color-footer-legal: #6b6b6b;
 
-  /* ---------- 圆角 ---------- */
+  /* ---------- Radii ---------- */
   --radius-logo: 8px;
-  --radius-button: 8px; /* GitHub 按钮、主题切换 */
+  --radius-button: 8px; /* GitHub button, theme toggle */
   --radius-tab: 10px;
-  --radius-icon: 10px; /* 卡片图标框 */
+  --radius-icon: 10px; /* Card icon container */
   --radius-card: 12px;
   --radius-search: 12px;
   --radius-chip: 6px; /* ⌘K */
-  --radius-pill: 999px; /* 徽章 */
+  --radius-pill: 999px; /* Badge */
 
-  /* ---------- 布局尺寸 ---------- */
-  --layout-max: 1440px; /* 设计画布宽度 */
-  --tool-max: 960px; /* 工具详情页内容宽度（设计稿未覆盖，按阅读舒适度取值） */
+  /* ---------- Layout ---------- */
+  --layout-max: 1440px; /* Design canvas width */
+  --tool-max: 960px; /* Tool page content width (not covered by the design; chosen for comfortable reading) */
   --layout-padding-x: 48px;
-  --nav-height: 72px; /* 导航栏高 */
+  --nav-height: 72px; /* Nav height */
   --card-width: 310px;
   --card-height: 150px;
   --grid-gap: 24px;
-  --content-gap: 32px; /* 工具内容区各区块间距 */
+  --content-gap: 32px; /* Spacing between tool page sections */
   --content-padding-top: 40px;
   --content-padding-bottom: 96px;
   --hero-padding-top: 96px;
@@ -63,8 +64,8 @@
   --search-width: 640px;
   --search-height: 56px;
 
-  /* ---------- 字体 ---------- */
-  /* 设计稿正文使用 Inter；中文回退到系统字体，避免 Inter 缺字时出现豆腐块 */
+  /* ---------- Typography ---------- */
+  /* The design uses Inter for body text; Chinese falls back to system fonts to avoid tofu glyphs. */
   --font-sans: Inter, system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
@@ -74,7 +75,7 @@
   --fw-semibold: 600;
   --fw-bold: 700;
 
-  /* 字号 */
+  /* Font sizes */
   --fs-hero-title: 64px;
   --fs-section-title: 24px;
   --fs-logo: 20px;
@@ -89,13 +90,13 @@
   --fs-badge: 13px;
   --fs-legal: 13px;
 
-  /* 行高：设计稿为 AUTO，实测值（Inter 的 normal ≈ 1.21）在这里写成 px，
-     避免中文回退字体的 normal 行高偏大导致卡片被撑高 */
-  --lh-logo: 24px; /* 20px 标题 */
-  --lh-nav: 18px; /* 15px 导航项 / Tab */
+  /* Line heights: the design uses AUTO. Measured values (Inter normal ≈ 1.21)
+     are written in px here so Chinese fallback fonts do not make cards taller. */
+  --lh-logo: 24px; /* 20px title */
+  --lh-nav: 18px; /* 15px nav item / tab */
   --lh-badge: 16px; /* 13px */
   --lh-hero-title: 77px; /* 64px */
-  --lh-subtitle: 32px; /* 20px，设计显式值 */
+  --lh-subtitle: 32px; /* 20px, explicit design value */
   --lh-section-title: 29px; /* 24px */
   --lh-card-title: 21px; /* 17px */
   --lh-card-desc: 17px; /* 14px */
@@ -103,7 +104,7 @@
   --lh-footer: 17px; /* 14px */
   --lh-legal: 16px; /* 13px */
 
-  /* ---------- 分类配色（图标框底色 / 图标描边） ---------- */
+  /* ---------- Category colors (icon background / icon stroke) ---------- */
   --cat-encoding-bg: #f0eeff;
   --cat-encoding-fg: #5046e5;
   --cat-format-bg: #eaf7f0;
@@ -121,8 +122,9 @@
 }
 
 /**
- * 深色主题：设计稿只提供了浅色，以下为按同一套 token 结构推导出的深色值
- * （页面底 #0f0f12 ≈ 页脚 #111 的同色系延伸；分类图标底色用图标主色 14% 透明叠底）。
+ * Dark theme: the design only ships a light theme. The values below are derived
+ * from the same token structure (page background #0f0f12 ≈ an extension of the
+ * #111 footer; category icon backgrounds use the icon color at 14% opacity).
  */
 :root[data-theme='dark'] {
   color-scheme: dark;

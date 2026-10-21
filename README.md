@@ -1,4 +1,133 @@
+<a id="english"></a>
+
+# Toolbox · Developer Utilities
+
+[中文](#中文) | **English**
+
+A **Vite + Vue 3 + TypeScript** implementation of the Ardot design “Developer Toolbox / 工具盒 Toolbox”.
+
+The home page reproduces the design (7 tool categories) and adds a “Number Base Converter” to the original 33 tools, for **34 fully working tools**. Every tool has its own shareable route and supports browser back / forward.
+
+## Run
+
+```bash
+npm install
+npm run dev      # local dev server, http://localhost:5173 by default
+npm run build    # type-check (vue-tsc) + production build
+npm run preview  # preview the production build
+```
+
+## Offline / intranet deployment
+
+**Zero external requests at runtime.** `dist/` can be copied to any static intranet server:
+
+- **Fonts**: Inter is bundled into `dist/assets` via `@fontsource/inter`; no Google Fonts or CDN links
+- **Icons**: lucide components compile to inline SVG; no icon fonts or remote assets
+- **Third-party libraries**: qrcode, jsbarcode, yaml, smol-toml and diff are all bundled
+- **No remote APIs, analytics scripts or external images**
+- **GitHub button** defaults to `href="#"` and performs no navigation or request; set `VITE_REPO_URL` to point at an intranet repository (see `.env.example`)
+- **Request audit**: loading the built home page and several tool pages produced 56 requests, all same-origin, with 0 external domains
+
+To deploy under a sub-path (e.g. `http://intranet/toolbox/`), set `base: '/toolbox/'` in `vite.config.ts` and rebuild.
+
+## Stack
+
+| Purpose | Choice |
+| --- | --- |
+| Framework | Vue 3 (`<script setup>`) + TypeScript |
+| Routing | vue-router 5 (History mode) |
+| Styling | Plain CSS + CSS variable design tokens (`src/styles/tokens.css`) |
+| Icons | lucide-vue-next |
+| QR / barcode | `qrcode`, `jsbarcode` |
+| Config formats | `yaml`, `smol-toml` |
+| Text diff | `diff` |
+
+Apart from the fonts and parsers above there is no UI framework. Every spacing, radius, font size and color comes from design tokens; there are no scattered hard-coded values.
+
+## Languages (Chinese / English)
+
+The language selector on the right side of the nav switches the UI instantly, with no reload:
+
+- **Default**: reads `toolbox:locale` from `localStorage`; when absent, uses the browser language (`zh*` → Chinese, otherwise English)
+- **Persistence**: the choice is written to `localStorage` (`toolbox:locale`) and updates `<html lang>`, the page title and the meta description
+- **Coverage**: nav, hero, categories, tool cards, footer, and every label / hint / error / table cell on all 34 tool pages, plus locale-aware `Intl` relative-time and time-zone formatting
+- **Implementation**: a small in-house i18n layer (no `vue-i18n` dependency). The Chinese source string is the dictionary key and English lives in `src/i18n/en.ts`; missing translations fall back to Chinese rather than showing a raw key or blank text
+- **Adding translations**: add a line such as `'中文原文': 'English text'` to `src/i18n/en.ts`. Use `{name}` placeholders for variables (e.g. `'共 {n} 个工具': '{n} tools'`) and call `t('共 {n} 个工具', { n })` from components
+- **Offline**: language data ships in the bundle; no translation API or remote resource is requested
+- The Chinese UI keeps the exact design dimensions (home page 3551px tall, cards 310×150). Longer English copy lets cards and the hero grow naturally so nothing is clipped
+
+## Routes
+
+| Path | Description |
+| --- | --- |
+| `/` | Home page (all tools) |
+| `/?view=favorites` | Favorites view (shareable and survives refresh) |
+| `/tool/:id` | Tool page, e.g. `/tool/base64`, `/tool/cidr` |
+
+Unknown paths redirect to the home page; unknown tool ids show a “Tool not found” message.
+
+## Tools (7 categories / 34 tools)
+
+| Category | Tools |
+| --- | --- |
+| Encoding | Base64 Encode / Decode, Hex Encoder, Number Base Converter, URL Encoder, Unicode Converter, Morse Code |
+| Format & Diff | JSON Formatter, YAML Formatter, TOML Formatter, Text Diff, XML Formatter |
+| Time | Timestamp Converter, Time Zone Converter, Cron Expression, Countdown |
+| Network / Ops | CIDR Subnet Calculator, IPv4 / IPv6 Calculator, Netmask Converter, Port Reference, HTTP Status Codes |
+| Text | Case Converter, Whitespace Cleaner, Word & Line Counter, Regex Tester, Text Replace |
+| Images | Image Compressor, Image Converter, Image Cropper, Color Picker |
+| Generators | QR Code Generator, Barcode Generator, Password Generator, Random String, UUID Generator |
+
+Feature notes:
+
+- **Encoding**: UTF-8 safe (Chinese and emoji are not corrupted); clear errors when decoding fails.
+- **Base conversion**: any source base from 2–36, live binary / octal / decimal / hex output, plus a full 2–36 table. Switching the source base converts the current value; BigInt keeps full precision.
+- **Formatting**: live validation with error details; YAML / TOML convert both ways.
+- **Time**: timestamps auto-detect seconds vs milliseconds; time zones use `Intl` and account for DST; Cron supports `*`, `*/n`, `a-b`, `a-b/n`, `a,b` and `JAN` / `MON` abbreviations and shows the next 5 runs.
+- **Network**: CIDR computes the network address, broadcast address and usable host range; IPv6 expands / compresses automatically; ports and status codes are searchable.
+- **Images**: everything runs locally in the browser with Canvas; adjust quality / size / format and download — images are never uploaded.
+- **Generators**: passwords and random strings use `crypto.getRandomValues` with rejection sampling to avoid modulo bias; UUID supports v4 and time-ordered v7.
+
+## Project structure
+
+```
+src/
+├── components/        Home page sections (nav, hero, category tabs, cards, footer)
+│   └── tool/          Shared tool page components (copy button)
+├── composables/       useTheme / useFavorites / useCopy
+├── data/toolbox.ts    Single source of truth for 7 categories / 34 tools (name, description, icon)
+├── i18n/              index.ts (locale state / t() / detection & persistence), en.ts (English dictionary)
+├── router/            Routes and scroll behavior
+├── styles/            tokens.css (design tokens + dark theme), base.css, tool.css
+├── tools/             34 tool components + registry.ts (id → component map)
+└── views/             HomeView (home page), ToolView (tool page shell)
+```
+
+To add a tool: add an entry to the right category in `src/data/toolbox.ts`, create a tool component, and register it in `src/tools/registry.ts`.
+
+## Differences from the design
+
+The design only covers the home page. The following parts are reasonable extensions and are noted in the implementation:
+
+1. **Icons**: Ardot MCP does not expose VECTOR geometry, so icons approximate the originals with the closest lucide shapes (see the comment above `toolCategories` in `src/data/toolbox.ts`).
+2. **Dark theme**: the design only has a light theme; dark values are derived from the existing tokens (`[data-theme='dark']` in `tokens.css`) while preserving contrast.
+3. **Favorites**: the design has no star. The star in the top-right corner of each card is hidden by default and appears on hover / keyboard focus; favorites are stored in `localStorage` and do not affect the original card size or visuals.
+4. **Tool pages**: the design has no detail pages. Their visual language (`.panel`, `.field`, `.btn`, `.stat`, `.table`) is derived entirely from the home page tokens.
+5. **1px strokes**: Ardot strokes do not consume layout, so card / tab strokes use `inset box-shadow`, keeping cards at 310×150 and tabs at 96px tall.
+6. **Inconsistencies in the design itself**: the home page subtitle says “40+” but the original has only 33 cards; the last card uses `hug_contents`; “Format” and “Generators” reuse the same green. All of these are preserved as-is.
+7. **The added “Number Base Converter”**: this tool is not in the original design. Its card follows the same spec (310×150, same icon background) and is inserted into the Encoding category, keeping the home page at 3551px tall.
+
+## Privacy
+
+All computation happens locally in the browser. No requests are sent and no login is required. Favorites, theme preference and language choice are stored only in `localStorage` (`toolbox:favorites`, `toolbox:theme`, `toolbox:locale`).
+
+---
+
+<a id="中文"></a>
+
 # 开发者工具箱 · 工具盒 Toolbox
+
+**中文** | [English](#english)
 
 Ardot 设计稿「开发者工具箱 / 工具盒 Toolbox」的 **Vite + Vue 3 + TypeScript** 实现。
 

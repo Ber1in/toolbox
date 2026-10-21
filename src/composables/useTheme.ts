@@ -10,7 +10,7 @@ function resolveInitialTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-// 模块级单例：多个组件共享同一份主题状态
+// Module-level singleton so every component shares the same theme state.
 const theme = ref<Theme>(resolveInitialTheme())
 
 watchEffect(() => {

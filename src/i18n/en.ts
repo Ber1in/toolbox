@@ -1,11 +1,13 @@
 /**
  * English messages.
  *
- * Key = 中文原文（与界面/数据中的字符串完全一致），Value = 英文译文。
- * 新增文案时若暂时没有译文，英文界面会回退显示中文原文，不会出现 key 或空白。
+ * Key = the original Chinese string (exactly as used in the UI/data).
+ * Value = the English translation. When a key has no translation yet, the
+ * English UI falls back to the Chinese source instead of showing a raw key
+ * or blank text.
  */
 export const en: Record<string, string> = {
-  // ---------- 通用 ----------
+  // ---------- Common ----------
   复制: 'Copy',
   已复制: 'Copied',
   清空: 'Clear',
@@ -18,7 +20,7 @@ export const en: Record<string, string> = {
   结果: 'Result',
   错误: 'Error',
 
-  // ---------- 导航 / 页脚 ----------
+  // ---------- Navigation / Footer ----------
   '工具盒 Toolbox': 'Toolbox',
   全部工具: 'All tools',
   收藏: 'Favorites',
@@ -40,7 +42,7 @@ export const en: Record<string, string> = {
   '2025 工具盒 Toolbox. 保留所有权利。': '2025 Toolbox. All rights reserved.',
   '数据本地处理 · 无需注册': 'Processed locally · No sign-up required',
 
-  // ---------- Hero / 首页 ----------
+  // ---------- Hero / Home ----------
   工具分类: 'Tool categories',
   '免费 · 开源 · 本地运行': 'Free · Open source · Runs locally',
   '开发者工具箱，一站搞定': 'Every developer tool, in one place',
@@ -59,7 +61,7 @@ export const en: Record<string, string> = {
   "这个工具可能已经改名或下线，回到首页看看其它工具吧。":
     'This tool may have been renamed or removed. Head back home to browse the others.',
 
-  // ---------- 分类 ----------
+  // ---------- Categories ----------
   编码转换: 'Encoding',
   '格式化 & Diff': 'Format & Diff',
   时间类: 'Time',
@@ -68,7 +70,7 @@ export const en: Record<string, string> = {
   图像处理: 'Images',
   离线生成: 'Generators',
 
-  // ---------- 工具名称 ----------
+  // ---------- Tool names ----------
   'Base64 编解码': 'Base64 Encode / Decode',
   'Hex 十六进制': 'Hex Encoder',
   进制转换: 'Number Base Converter',
@@ -104,7 +106,7 @@ export const en: Record<string, string> = {
   随机字符串: 'Random String',
   'UUID 生成': 'UUID Generator',
 
-  // ---------- 工具描述 ----------
+  // ---------- Tool descriptions ----------
   '文本与 Base64 互转，支持 UTF-8': 'Convert text to and from Base64 with UTF-8 support',
   '字符串与 Hex 字节互转': 'Convert strings to and from hex bytes',
   '2 / 8 / 10 / 16 进制互转': 'Convert between base 2 / 8 / 10 / 16',
@@ -140,7 +142,7 @@ export const en: Record<string, string> = {
   '自定义长度随机字符串': 'Random strings of any length',
   'v4 / v7 UUID 批量生成': 'Generate v4 / v7 UUIDs in bulk',
 
-  // ---------- 工具页 ----------
+  // ---------- Tool pages ----------
   "CODE128（通用）": "CODE128 (general)",
   "EAN-13（13 位数字）": "EAN-13 (13 digits)",
   "EAN-8（8 位数字）": "EAN-8 (8 digits)",

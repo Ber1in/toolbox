@@ -42,7 +42,7 @@ const emit = defineEmits<{ (e: 'toggle-favorite', id: string): void }>()
   position: relative;
   width: var(--card-width);
   min-height: var(--card-height);
-  /* 用内阴影画描边：设计稿的 stroke 不占布局，用 border 会让卡片高 152 而不是 150 */
+  /* Use an inset shadow for the stroke: Ardot strokes do not consume layout, and a border would make cards 152px tall instead of 150px. */
   box-shadow: inset 0 0 0 1px var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-card);
@@ -88,7 +88,7 @@ const emit = defineEmits<{ (e: 'toggle-favorite', id: string): void }>()
   color: var(--color-ink-muted);
 }
 
-/* 收藏按钮：设计稿无此控件，默认隐藏，hover / 键盘聚焦时才出现，避免改变卡片视觉 */
+/* Favorite button: not part of the design. Hidden by default and shown on hover or keyboard focus so the card visuals stay unchanged. */
 .card__star {
   position: absolute;
   top: 12px;

@@ -5,7 +5,7 @@ export type Locale = 'zh' | 'en'
 
 const STORAGE_KEY = 'toolbox:locale'
 
-/** 界面文案以中文原文为 key，英文查表；未翻译的条目在英文下回退为中文原文。 */
+/** UI copy uses the Chinese source as its key; English is looked up in the dictionary, and missing entries fall back to Chinese. */
 function detectLocale(): Locale {
   const stored = localStorage.getItem(STORAGE_KEY)
   if (stored === 'zh' || stored === 'en') return stored
@@ -14,7 +14,7 @@ function detectLocale(): Locale {
   return language.startsWith('zh') ? 'zh' : 'en'
 }
 
-// 模块级单例：导航栏切换后所有组件共享同一份语言状态
+// Module-level singleton: switching in the nav updates every component.
 export const locale = ref<Locale>(detectLocale())
 
 watchEffect(() => {
@@ -24,7 +24,7 @@ watchEffect(() => {
 
 export type TranslateParams = Record<string, string | number>
 
-/** 插值格式：{name}；参数缺失时保留原占位符，便于排查。 */
+/** Interpolation format: {name}. Missing params keep the placeholder for easier debugging. */
 export function translate(key: string, params?: TranslateParams): string {
   const template = locale.value === 'en' ? (en[key] ?? key) : key
   if (!params) return template

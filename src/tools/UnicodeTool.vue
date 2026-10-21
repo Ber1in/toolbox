@@ -15,7 +15,7 @@ const result = computed(() => {
       const encoded = Array.from(input.value)
         .map((char) => {
           const code = char.codePointAt(0) ?? 0
-          // 可打印 ASCII 原样保留，其余转成 \uXXXX / \u{XXXXX}
+          // Keep printable ASCII as-is; escape everything else as \uXXXX / \u{XXXXX}.
           if (code >= 0x20 && code <= 0x7e) return char
           return code > 0xffff
             ? `\\u{${code.toString(16)}}`

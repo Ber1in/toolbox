@@ -16,7 +16,7 @@ const { favorites, toggleFavorite } = useFavorites()
 const search = ref('')
 const active = ref<CategoryKey | null>(toolCategories[0].key)
 
-/** 视图由 URL 决定：/?view=favorites 即「收藏」 */
+/** The view is driven by the URL: /?view=favorites shows favorites. */
 const view = computed<'all' | 'favorites'>(() =>
   route.query.view === 'favorites' ? 'favorites' : 'all',
 )

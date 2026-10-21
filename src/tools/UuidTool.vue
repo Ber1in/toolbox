@@ -28,7 +28,7 @@ function uuidv7() {
   const bytes = new Uint8Array(16)
   crypto.getRandomValues(bytes)
 
-  // 48 位毫秒时间戳（大端）
+  // 48-bit millisecond timestamp (big-endian).
   bytes[0] = Math.floor(timestamp / 2 ** 40) & 0xff
   bytes[1] = Math.floor(timestamp / 2 ** 32) & 0xff
   bytes[2] = Math.floor(timestamp / 2 ** 24) & 0xff

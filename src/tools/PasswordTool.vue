@@ -62,7 +62,7 @@ function generate() {
   }
 
   passwords.value = Array.from({ length: Math.max(1, Math.min(20, count.value)) }, () => {
-    // 保证每类字符至少出现一次
+    // Ensure at least one character from each selected class.
     const required = pools.value.filter((pool) => pool.length).map((pool) => pool[randomInt(pool.length)])
     const rest = Array.from(
       { length: Math.max(0, length.value - required.length) },
@@ -70,7 +70,7 @@ function generate() {
     )
     const all = [...required, ...rest]
 
-    // Fisher–Yates 洗牌
+    // Fisher–Yates shuffle.
     for (let index = all.length - 1; index > 0; index -= 1) {
       const target = randomInt(index + 1)
       ;[all[index], all[target]] = [all[target], all[index]]

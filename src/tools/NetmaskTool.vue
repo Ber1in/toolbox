@@ -41,7 +41,7 @@ const parsed = computed(() => {
   const mask = ((nums[0] << 24) | (nums[1] << 16) | (nums[2] << 8) | nums[3]) >>> 0
   const inverted = ~mask >>> 0
 
-  // 合法掩码：取反后必须是 2^n - 1（低位连续 1）
+  // Valid mask: the inverted value must be 2^n - 1 (contiguous low bits set).
   if (((inverted + 1) & inverted) !== 0) {
     return { error: t('这不是合法的子网掩码：二进制必须是连续的 1 后接连续的 0') }
   }

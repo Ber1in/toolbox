@@ -46,7 +46,7 @@ export type CategoryKey =
   | 'generate'
 
 export interface Tool {
-  /** 稳定的业务 id，用于收藏、埋点等 */
+  /** Stable business id used for favorites, analytics, etc. */
   id: string
   name: string
   description: string
@@ -55,15 +55,18 @@ export interface Tool {
 
 export interface ToolCategory {
   key: CategoryKey
-  /** Tab 与分类标题共用同一文案（设计稿中两者一致） */
+  /** Tabs and section headings share the same label (identical in the design). */
   label: string
   tools: Tool[]
 }
 
 /**
- * 文案、分组、顺序均照搬设计稿。
- * 图标：Ardot 的矢量节点没有暴露 path 数据，这里用 lucide 的同语义描边图标替代
- * （线宽 2、圆角端点，与原稿视觉语言一致）；如需 1:1 还原可从设计稿导出 SVG 后替换 icon 字段。
+ * Copy, grouping and order follow the design file.
+ *
+ * Icons: Ardot does not expose vector path data for these nodes, so semantically
+ * equivalent lucide outline icons are used instead (2px stroke, rounded caps,
+ * matching the original visual language). For a 1:1 match, export SVGs from the
+ * design and replace the icon field.
  */
 export const toolCategories: ToolCategory[] = [
   {

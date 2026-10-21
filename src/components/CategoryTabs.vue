@@ -39,7 +39,7 @@ const emit = defineEmits<{ (e: 'select', key: CategoryKey): void }>()
 .tab {
   height: 44px;
   padding: 0 18px;
-  /* 同卡片：用内阴影画 1px 描边，保证宽度与设计稿一致（96px 而非 98px） */
+  /* Same as cards: draw the 1px stroke with an inset shadow so the width matches the design (96px, not 98px). */
   box-shadow: inset 0 0 0 1px var(--color-border);
   border-radius: var(--radius-tab);
   background: var(--color-card);

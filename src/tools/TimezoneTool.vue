@@ -42,7 +42,7 @@ function toLocalInput(date: Date) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
 }
 
-/** 某一时刻在指定时区相对 UTC 的偏移（毫秒） */
+/** Offset of a given instant from UTC in the specified time zone (ms). */
 function zoneOffset(timeZone: string, date: Date) {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone,
@@ -70,7 +70,7 @@ function zoneOffset(timeZone: string, date: Date) {
   return asUtc - date.getTime()
 }
 
-/** 把「某时区的墙上时间」转成真实时刻 */
+/** Convert a wall-clock time in a given time zone to the real instant. */
 function wallTimeToDate(wall: string, timeZone: string) {
   const [datePart, timePart] = wall.split('T')
   const [year, month, day] = datePart.split('-').map(Number)

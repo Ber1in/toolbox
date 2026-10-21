@@ -1,4 +1,4 @@
-/* 工具详情页通用样式：沿用 tokens.css 的设计变量，保证与首页同一套视觉语言 */
+/* Shared tool page styles: reuse the design tokens from tokens.css to keep the same visual language as the home page. */
 
 .tool-page {
   min-height: calc(100vh - var(--nav-height));
@@ -341,7 +341,7 @@
   word-break: break-all;
 }
 
-/* 长值（如 IP 范围）占两列，避免从中间折断 */
+/* Long values (e.g. IP ranges) span two columns so they do not break mid-value. */
 .stat--wide {
   grid-column: span 2;
 }
@@ -423,7 +423,7 @@ mark {
   color: inherit;
 }
 
-/* 分类配色：首页卡片与工具页头部共用 */
+/* Category colors shared by home cards and the tool page header. */
 .cat-encoding {
   --cat-bg: var(--cat-encoding-bg);
   --cat-fg: var(--cat-encoding-fg);

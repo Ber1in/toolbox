@@ -77,7 +77,7 @@ function onLocaleChange(event: Event) {
         <Sun v-else :size="32" :stroke-width="2" />
       </button>
 
-      <!-- 默认不指向任何外部地址；内网部署可通过 VITE_REPO_URL 配置仓库链接 -->
+      <!-- Empty by default: no external navigation. Set VITE_REPO_URL for intranet deployments. -->
       <a
         class="github"
         :href="repoUrl || '#'"

@@ -45,7 +45,7 @@ async function convert() {
     if (!context) throw new Error(t('当前浏览器不支持 Canvas'))
 
     if (format.value === 'image/jpeg') {
-      // JPEG 无透明通道，先铺白底
+      // JPEG has no alpha channel, so fill the canvas with white first.
       context.fillStyle = '#ffffff'
       context.fillRect(0, 0, canvas.width, canvas.height)
     }

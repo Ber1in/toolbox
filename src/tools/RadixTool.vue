@@ -93,7 +93,7 @@ const outputs = computed(() => {
       group: groupBinary.value,
       prefix: showPrefix.value,
     }),
-    // 复制时去掉二进制分组空格，避免粘贴出多余空白
+    // Strip binary grouping spaces when copying so pasted values contain no extra whitespace.
     copy: format(result.value, base, {
       upper: uppercaseHex.value,
       prefix: showPrefix.value,
@@ -135,7 +135,7 @@ const placeholder = computed(() => {
   }
 })
 
-// 切换源进制时保留数值本身：把当前输入换算成新进制
+// Preserve the numeric value when switching source bases: convert the current input to the new base.
 watch(sourceBase, (next, previous) => {
   if (!input.value.trim()) return
   const result = parse(input.value, previous)

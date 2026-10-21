@@ -39,7 +39,7 @@ async function render() {
     if (mode.value === 'stretch') {
       context.drawImage(image, 0, 0, canvas.width, canvas.height)
     } else {
-      // cover：等比缩放后居中裁剪
+      // cover: scale proportionally, then crop from the center.
       const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight)
       const drawWidth = image.naturalWidth * scale
       const drawHeight = image.naturalHeight * scale

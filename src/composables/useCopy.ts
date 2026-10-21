@@ -1,6 +1,6 @@
 import { onBeforeUnmount, ref } from 'vue'
 
-/** 复制到剪贴板，附带「已复制」状态（1.5s 后复位） */
+/** Copy to clipboard and expose a "copied" state that resets after 1.5s. */
 export function useCopy() {
   const copied = ref(false)
   let timer: number | undefined
@@ -11,7 +11,7 @@ export function useCopy() {
     try {
       await navigator.clipboard.writeText(text)
     } catch {
-      // 非安全上下文 / 无权限时的兜底
+      // Fallback for insecure contexts or missing permissions.
       const area = document.createElement('textarea')
       area.value = text
       area.style.position = 'fixed'
