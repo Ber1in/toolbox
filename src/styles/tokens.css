@@ -44,7 +44,6 @@
   --radius-pill: 999px; /* Badge */
 
   /* ---------- Layout ---------- */
-  --layout-max: 1440px; /* Design canvas width */
   --tool-max: 960px; /* Tool page content width (not covered by the design; chosen for comfortable reading) */
   --layout-padding-x: 48px;
   --nav-height: 72px; /* Nav height */
