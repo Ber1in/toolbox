@@ -45,7 +45,7 @@ function decorateLinks(doc: Document): void {
       return
     }
 
-    if (/^(https?:)?\/\//i.test(href)) {
+    if (/^(?:https?:|ftp:)?\/\//i.test(href)) {
       anchor.setAttribute('target', '_blank')
       anchor.setAttribute('rel', 'noopener noreferrer')
     }

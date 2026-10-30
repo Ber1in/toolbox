@@ -210,10 +210,18 @@ function onSplitterPointerDown(event: PointerEvent) {
 
   window.addEventListener('pointermove', onSplitterPointerMove)
   window.addEventListener('pointerup', onSplitterPointerUp)
+  window.addEventListener('pointercancel', onSplitterPointerUp)
+  window.addEventListener('blur', onSplitterPointerUp)
 }
 
 function onSplitterPointerMove(event: PointerEvent) {
   if (!dragging.value) return
+
+  if (event.buttons === 0) {
+    onSplitterPointerUp()
+    return
+  }
+
   const ratio = dragStartRatio + (event.clientX - dragStartX) / dragWidth
   settings.value.splitRatio = Math.min(0.8, Math.max(0.2, ratio))
 }
@@ -222,6 +230,8 @@ function onSplitterPointerUp() {
   dragging.value = false
   window.removeEventListener('pointermove', onSplitterPointerMove)
   window.removeEventListener('pointerup', onSplitterPointerUp)
+  window.removeEventListener('pointercancel', onSplitterPointerUp)
+  window.removeEventListener('blur', onSplitterPointerUp)
 }
 
 function resetSplitter() {
@@ -436,6 +446,8 @@ onBeforeUnmount(() => {
   window.clearTimeout(copiedTimer)
   window.removeEventListener('pointermove', onSplitterPointerMove)
   window.removeEventListener('pointerup', onSplitterPointerUp)
+  window.removeEventListener('pointercancel', onSplitterPointerUp)
+  window.removeEventListener('blur', onSplitterPointerUp)
 
   if (contentDirty) {
     saveContent(source.value)

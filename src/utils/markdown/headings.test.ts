@@ -41,13 +41,14 @@ describe('extractHeadings', () => {
 
   it('adds safe external-link and image attributes', () => {
     const result = extractHeadings(
-      '<a href="https://example.com">external</a><a href="#local">local</a><img src="https://example.com/a.png" alt="a">',
+      '<a href="https://example.com">external</a><a href="ftp://example.com/file">ftp</a><a href="#local">local</a><img src="https://example.com/a.png" alt="a">',
     )
 
     expect(result.html).toContain('target="_blank"')
     expect(result.html).toContain('rel="noopener noreferrer"')
     expect(result.html).toContain('referrerpolicy="no-referrer"')
     expect(result.html).toContain('loading="lazy"')
+    expect(result.html).toContain('href="ftp://example.com/file" target="_blank"')
   })
 
   it('wraps tables for horizontal scrolling', () => {

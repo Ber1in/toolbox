@@ -17,7 +17,7 @@ const entry = computed(() => findTool(props.id))
   <main
     v-if="entry"
     class="tool-page"
-    :class="[`cat-${entry.category}`, { 'tool-page--wide': entry.fullWidth }]"
+    :class="`cat-${entry.category}`"
   >
     <div class="tool-page__inner" :class="{ 'tool-page__inner--wide': entry.fullWidth }">
       <RouterLink class="tool-back" to="/">
