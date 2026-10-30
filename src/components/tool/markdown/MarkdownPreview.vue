@@ -28,6 +28,8 @@ let enhanceToken = 0
 let preservedScroll = 0
 let scrollFrame = 0
 let activeId = ''
+let pinnedHeadingId = ''
+let pinSettleAt = 0
 let mermaidPromise: Promise<typeof import('mermaid')> | null = null
 let katexPromise: Promise<typeof import('katex/contrib/auto-render')> | null = null
 let katexCssPromise: Promise<unknown> | null = null
@@ -291,7 +293,20 @@ async function enhanceMath(token: number): Promise<void> {
   })
 }
 
+function clearPinnedHeading(): void {
+  if (!pinnedHeadingId) return
+
+  pinnedHeadingId = ''
+  updateActiveHeading()
+}
+
 function updateActiveHeading(): void {
+  // Keep the heading the user explicitly clicked active until they scroll or
+  // interact with the preview. Without this, a heading near the end of a short
+  // document can never reach the top threshold, so the outline would jump back
+  // to the previous heading immediately after the click.
+  if (pinnedHeadingId) return
+
   const root = bodyRef.value
   const scrollerEl = scroller.value
   if (!root || !scrollerEl) return
@@ -347,6 +362,7 @@ async function rebuild(): Promise<void> {
   const root = bodyRef.value
   if (!root) return
 
+  pinnedHeadingId = ''
   const top = scroller.value?.scrollTop ?? 0
   root.innerHTML = props.html
   if (scroller.value) {
@@ -358,6 +374,10 @@ async function rebuild(): Promise<void> {
 function handleScroll(): void {
   const scrollerEl = scroller.value
   if (!scrollerEl) return
+
+  if (pinnedHeadingId && performance.now() >= pinSettleAt) {
+    pinnedHeadingId = ''
+  }
 
   const max = scrollerEl.scrollHeight - scrollerEl.clientHeight
   emit('scroll', {
@@ -389,6 +409,13 @@ function scrollToHeading(id: string): void {
   )
   if (!target) return
 
+  pinnedHeadingId = id
+  pinSettleAt = performance.now() + 700
+  if (activeId !== id) {
+    activeId = id
+    emit('active-heading', id)
+  }
+
   const top =
     target.getBoundingClientRect().top -
     scrollerEl.getBoundingClientRect().top +
@@ -405,6 +432,7 @@ function getContentElement(): HTMLElement | null {
 watch(
   () => props.html,
   () => {
+    pinnedHeadingId = ''
     preservedScroll = scroller.value?.scrollTop ?? 0
   },
   { flush: 'pre' },
@@ -442,17 +470,32 @@ watch(locale, () => {
 watch(
   () => props.headings,
   () => {
+    if (pinnedHeadingId && !props.headings.some((heading) => heading.id === pinnedHeadingId)) {
+      pinnedHeadingId = ''
+    }
     void nextTick().then(updateActiveHeading)
   },
 )
 
 onMounted(() => {
   void enhance()
+
+  const scrollerEl = scroller.value
+  scrollerEl?.addEventListener('wheel', clearPinnedHeading, { passive: true })
+  scrollerEl?.addEventListener('touchstart', clearPinnedHeading, { passive: true })
+  scrollerEl?.addEventListener('pointerdown', clearPinnedHeading)
+  scrollerEl?.addEventListener('keydown', clearPinnedHeading)
 })
 
 onBeforeUnmount(() => {
   enhanceToken += 1
   window.cancelAnimationFrame(scrollFrame)
+
+  const scrollerEl = scroller.value
+  scrollerEl?.removeEventListener('wheel', clearPinnedHeading)
+  scrollerEl?.removeEventListener('touchstart', clearPinnedHeading)
+  scrollerEl?.removeEventListener('pointerdown', clearPinnedHeading)
+  scrollerEl?.removeEventListener('keydown', clearPinnedHeading)
 })
 
 defineExpose({ getContentElement, scrollToHeading, scrollToRatio })
