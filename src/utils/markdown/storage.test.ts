@@ -42,6 +42,20 @@ describe('markdown storage', () => {
     expect(loadSettings()).toEqual(DEFAULT_SETTINGS)
   })
 
+  it('falls back to defaults for an unknown settings version', () => {
+    window.localStorage.setItem(
+      SETTINGS_KEY,
+      JSON.stringify({ version: 99, splitRatio: 0.7 }),
+    )
+    expect(loadSettings()).toEqual(DEFAULT_SETTINGS)
+
+    window.localStorage.setItem(
+      SETTINGS_KEY,
+      JSON.stringify({ version: '99', splitRatio: 0.7 }),
+    )
+    expect(loadSettings()).toEqual(DEFAULT_SETTINGS)
+  })
+
   it('falls back to memory when storage access throws', () => {
     const throwingStorage = {
       get length(): number {

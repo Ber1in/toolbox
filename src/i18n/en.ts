@@ -664,4 +664,13 @@ export const en: Record<string, string> = {
   "滚动同步已开启": "Scroll sync on",
   "行内公式已关闭": "Inline math off",
   "行内公式已开启": "Inline math on",
+  "替换": "Replace",
+  "下一个": "Next",
+  "上一个": "Previous",
+  "全部": "All",
+  "区分大小写": "Match case",
+  "正则": "Regexp",
+  "全词匹配": "By word",
+  "全部替换": "Replace all",
+  "关闭": "Close",
 }

@@ -32,6 +32,13 @@ describe('extractHeadings', () => {
     expect(result.headings[0].id).toBe('intro')
   })
 
+  it('renames an existing heading id that collides with another element', () => {
+    const result = extractHeadings('<div id="foo"></div><h1 id="foo">Foo</h1>')
+
+    expect(result.headings[0].id).toBe('foo-2')
+    expect(result.html).toContain('id="foo-2"')
+  })
+
   it('adds safe external-link and image attributes', () => {
     const result = extractHeadings(
       '<a href="https://example.com">external</a><a href="#local">local</a><img src="https://example.com/a.png" alt="a">',
@@ -47,6 +54,26 @@ describe('extractHeadings', () => {
     const result = extractHeadings('<table><tbody><tr><td>1</td></tr></tbody></table>')
 
     expect(result.html).toContain('class="md-table-wrap"')
+  })
+
+  it('marks GFM task-list items and their parent list', () => {
+    const result = extractHeadings(
+      '<ul><li><input type="checkbox" checked disabled> done</li></ul>',
+    )
+
+    expect(result.html).toContain('class="task-list-item"')
+    expect(result.html).toContain('class="contains-task-list"')
+    expect(result.html).toContain('disabled')
+  })
+
+  it('removes interactive inputs that are not task-list checkboxes', () => {
+    const result = extractHeadings(
+      '<input type="text" value="x"><input type="file"><input type="checkbox">',
+    )
+
+    expect(result.html).not.toContain('type="text"')
+    expect(result.html).not.toContain('type="file"')
+    expect(result.html).toContain('type="checkbox"')
   })
 })
 

@@ -60,6 +60,29 @@ function decorateImages(doc: Document): void {
   })
 }
 
+function restrictInputs(doc: Document): void {
+  doc.body.querySelectorAll('input').forEach((input) => {
+    if (input.type !== 'checkbox') {
+      input.remove()
+      return
+    }
+
+    // Task-list checkboxes are display-only; never allow a Markdown document
+    // to create interactive form controls.
+    input.disabled = true
+  })
+}
+
+function decorateTaskLists(doc: Document): void {
+  doc.body.querySelectorAll('li').forEach((item) => {
+    const checkbox = item.querySelector(':scope > input[type="checkbox"]')
+    if (!checkbox) return
+
+    item.classList.add('task-list-item')
+    item.parentElement?.classList.add('contains-task-list')
+  })
+}
+
 function wrapTables(doc: Document): void {
   doc.body.querySelectorAll('table').forEach((table) => {
     if (table.parentElement?.classList.contains('md-table-wrap')) {
@@ -109,7 +132,7 @@ export function extractHeadings(html: string): HeadingExtraction {
     let id = existingId && !usedIds.has(existingId) && !reservedIds.has(existingId) ? existingId : base
     let suffix = 2
 
-    while (usedIds.has(id) || (id !== existingId && reservedIds.has(id))) {
+    while (usedIds.has(id) || reservedIds.has(id)) {
       id = `${base}-${suffix}`
       suffix += 1
     }
@@ -121,6 +144,8 @@ export function extractHeadings(html: string): HeadingExtraction {
 
   decorateLinks(doc)
   decorateImages(doc)
+  restrictInputs(doc)
+  decorateTaskLists(doc)
   wrapTables(doc)
 
   return {

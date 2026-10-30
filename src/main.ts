@@ -7,6 +7,7 @@ import '@fontsource/inter/700.css'
 import './styles/tokens.css'
 import './styles/base.css'
 import './styles/tool.css'
+import './styles/markdown.css'
 
 import App from './App.vue'
 import { router } from './router'

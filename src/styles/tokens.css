@@ -157,6 +157,9 @@
   --md-image-error-fg: var(--color-danger);
   --md-search-match: color-mix(in srgb, var(--color-accent) 18%, transparent);
   --md-search-match-selected: color-mix(in srgb, var(--color-accent) 34%, transparent);
+  --md-overlay: rgb(0 0 0 / 36%);
+  --md-modal-shadow: 0 20px 60px rgb(0 0 0 / 18%);
+  --md-drawer-shadow: 0 0 40px rgb(0 0 0 / 18%);
   --md-syntax-comment: #8a8a93;
   --md-syntax-keyword: #7c3aed;
   --md-syntax-string: #0f766e;
@@ -203,6 +206,9 @@
 
   --md-editor-active-line: color-mix(in srgb, var(--color-accent) 10%, transparent);
   --md-editor-selection: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --md-overlay: rgb(0 0 0 / 56%);
+  --md-modal-shadow: 0 20px 60px rgb(0 0 0 / 48%);
+  --md-drawer-shadow: 0 0 40px rgb(0 0 0 / 48%);
   --md-syntax-comment: #7c7c87;
   --md-syntax-keyword: #c4b5fd;
   --md-syntax-string: #6ee7b7;

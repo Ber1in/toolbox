@@ -7,10 +7,10 @@ describe('exportPreviewHtml', () => {
       <div class="preview">
         <h1>Title</h1>
         <pre><code><span class="hljs-keyword">const</span></code></pre>
-        <div class="md-mermaid">
+        <div class="md-mermaid-block" data-mermaid-index="0">
           <svg><text>diagram</text></svg>
-          <div class="md-mermaid__toolbar" data-md-ui><button>source</button></div>
-          <pre class="md-mermaid__source" data-md-ui>graph TD</pre>
+          <div class="md-mermaid-block__toolbar" data-md-ui><button>source</button></div>
+          <pre class="md-mermaid-block__source" data-md-ui>graph TD</pre>
         </div>
         <span class="katex"><math><mi>x</mi></math></span>
         <button data-md-ui>copy</button>
@@ -25,6 +25,25 @@ describe('exportPreviewHtml', () => {
     expect(html).toContain('<svg>')
     expect(html).toContain('<math>')
     expect(html).not.toContain('data-md-ui')
+    expect(html).not.toContain('data-mermaid-index')
+    expect(html).not.toContain('graph TD')
+  })
+
+  it('unhides a Mermaid diagram when the source view was active', () => {
+    document.body.innerHTML = `
+      <div class="preview">
+        <div class="md-mermaid-block">
+          <div class="md-mermaid-block__diagram" hidden><svg><text>diagram</text></svg></div>
+          <pre class="md-mermaid-block__source" data-md-ui>graph TD</pre>
+        </div>
+      </div>
+    `
+
+    const root = document.querySelector('.preview') as HTMLElement
+    const html = exportPreviewHtml(root)
+
+    expect(html).toContain('<svg>')
+    expect(html).not.toContain('hidden')
     expect(html).not.toContain('graph TD')
   })
 })

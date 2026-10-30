@@ -21,3 +21,11 @@ export interface PreparedMarkdown extends RenderResult {
   headings: Heading[]
   toc: TocNode[]
 }
+
+/** Scroll metrics emitted by the editor and preview for synchronized scrolling. */
+export interface ScrollPayload {
+  ratio: number
+  scrollTop: number
+  scrollHeight: number
+  clientHeight: number
+}

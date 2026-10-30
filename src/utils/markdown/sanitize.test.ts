@@ -12,16 +12,30 @@ describe('sanitizeMarkdownHtml', () => {
     expect(html).not.toContain('javascript:')
   })
 
-  it('removes iframe, form, style, object and inline styles', () => {
+  it('removes iframe, form, style, object, form controls and inline styles', () => {
     const html = sanitizeMarkdownHtml(
-      '<iframe src="https://example.com"></iframe><form action="/x"><button>go</button></form><style>body{}</style><object data="x"></object><p style="color:red">text</p>',
+      '<iframe src="https://example.com"></iframe><form action="/x"><button>go</button><select><option>x</option></select><textarea></textarea><dialog>modal</dialog></form><style>body{}</style><object data="x"></object><p style="color:red">text</p>',
     )
 
     expect(html).not.toContain('<iframe')
     expect(html).not.toContain('<form')
+    expect(html).not.toContain('<button')
+    expect(html).not.toContain('<select')
+    expect(html).not.toContain('<option')
+    expect(html).not.toContain('<textarea')
+    expect(html).not.toContain('<dialog')
     expect(html).not.toContain('<style')
     expect(html).not.toContain('<object')
     expect(html).not.toContain('style=')
+  })
+
+  it('strips app-owned chrome attributes from user content', () => {
+    const html = sanitizeMarkdownHtml(
+      '<div data-md-chrome="confirm" class="md-confirm">spoof</div>',
+    )
+
+    expect(html).not.toContain('data-md-chrome')
+    expect(html).toContain('md-confirm')
   })
 
   it('keeps GFM task-list inputs and the Mermaid index', () => {

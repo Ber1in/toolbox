@@ -1,7 +1,19 @@
 import DOMPurify from 'dompurify'
 
 const config = {
-  FORBID_TAGS: ['script', 'iframe', 'form', 'style', 'object', 'embed'],
+  FORBID_TAGS: [
+    'script',
+    'iframe',
+    'form',
+    'style',
+    'object',
+    'embed',
+    'button',
+    'select',
+    'option',
+    'textarea',
+    'dialog',
+  ],
   FORBID_ATTR: ['style'],
   ADD_TAGS: ['input'],
   ADD_ATTR: ['type', 'checked', 'disabled', 'data-mermaid-index'],

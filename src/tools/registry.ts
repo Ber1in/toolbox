@@ -1,4 +1,4 @@
-import type { Component } from 'vue'
+import { defineAsyncComponent, type Component } from 'vue'
 import { allTools, type Tool } from '../data/toolbox'
 
 import Base64Tool from './Base64Tool.vue'
@@ -17,7 +17,6 @@ import HexTool from './HexTool.vue'
 import HttpTool from './HttpTool.vue'
 import IpTool from './IpTool.vue'
 import JsonTool from './JsonTool.vue'
-import MarkdownTool from './MarkdownTool.vue'
 import MorseTool from './MorseTool.vue'
 import NetmaskTool from './NetmaskTool.vue'
 import PasswordTool from './PasswordTool.vue'
@@ -36,6 +35,10 @@ import UuidTool from './UuidTool.vue'
 import WhitespaceTool from './WhitespaceTool.vue'
 import XmlTool from './XmlTool.vue'
 import YamlTool from './YamlTool.vue'
+
+// CodeMirror, marked and highlight.js are only needed on this one route, so
+// keep them in a route-level chunk instead of the initial bundle.
+const MarkdownTool = defineAsyncComponent(() => import('./MarkdownTool.vue'))
 
 const components: Record<string, Component> = {
   base64: Base64Tool,

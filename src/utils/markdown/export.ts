@@ -7,7 +7,12 @@ export function exportPreviewHtml(root: HTMLElement): string {
   const clone = root.cloneNode(true) as HTMLElement
 
   clone.querySelectorAll('[data-md-ui]').forEach((node) => node.remove())
-  clone.querySelectorAll('.md-mermaid__source').forEach((node) => node.remove())
+  clone.querySelectorAll<HTMLElement>('[data-mermaid-index]').forEach((node) => {
+    node.removeAttribute('data-mermaid-index')
+  })
+  clone.querySelectorAll<HTMLElement>('.md-mermaid-block__diagram').forEach((diagram) => {
+    diagram.removeAttribute('hidden')
+  })
 
   return clone.innerHTML
 }

@@ -52,6 +52,10 @@ export function loadSettings(storage: Storage | null = getStorage()): MarkdownSe
     }
 
     const parsed = JSON.parse(raw) as Partial<MarkdownSettings>
+    if ('version' in parsed && parsed.version !== 1) {
+      return { ...DEFAULT_SETTINGS }
+    }
+
     return {
       version: 1,
       splitRatio: clampRatio(parsed.splitRatio),
