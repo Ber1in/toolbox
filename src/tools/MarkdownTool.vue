@@ -75,6 +75,12 @@ let copiedTimer: number | undefined
 let contentDirty = false
 let skipNextSave = false
 let syncing = false
+// A TOC click starts a one-way smooth scroll on the preview. Keep the editor's
+// scroll events from syncing the preview back before that scroll settles; some
+// browsers deliver the programmatic editor scroll event late enough to cancel
+// the smooth scroll partway through.
+let tocScrollUntil = 0
+const TOC_SYNC_SUPPRESSION_MS = 1000
 let dragStartX = 0
 let dragStartRatio = 0.5
 let dragWidth = 1
@@ -155,12 +161,12 @@ function syncScroll(ratio: number, target: 'editor' | 'preview') {
 }
 
 function onEditorScroll(payload: ScrollPayload) {
-  if (!settings.value.scrollSync || syncing) return
+  if (!settings.value.scrollSync || syncing || performance.now() < tocScrollUntil) return
   syncScroll(payload.ratio, 'preview')
 }
 
 function onPreviewScroll(payload: ScrollPayload) {
-  if (!settings.value.scrollSync || syncing) return
+  if (!settings.value.scrollSync || syncing || performance.now() < tocScrollUntil) return
   syncScroll(payload.ratio, 'editor')
 }
 
@@ -184,6 +190,8 @@ function closeToc() {
 }
 
 function onTocSelect(id: string) {
+  tocScrollUntil = performance.now() + TOC_SYNC_SUPPRESSION_MS
+
   if (narrow.value) {
     mobileTab.value = 'preview'
     tocDrawerOpen.value = false
