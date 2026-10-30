@@ -14,11 +14,11 @@
 
 ## 3. Markdown 渲染与安全核心
 
-- [ ] 3.1 实现 `src/utils/markdown/render.ts`：使用 marked 开启 GFM，自定义 code renderer 处理 Mermaid 占位、highlight.js 高亮和未知语言转义；新增单元测试覆盖表格、任务列表、围栏代码、Mermaid 围栏和未知语言，运行 `npm test` 通过。 <!-- comet-task:4aa8ef85-e766-4b0a-8301-a030839fbb45 -->
-- [ ] 3.2 实现 `src/utils/markdown/sanitize.ts`：配置 DOMPurify 禁止 script/iframe/form/style/object/embed、事件属性和 `style` 属性，保留 GFM 任务列表所需 input 与 Mermaid 占位索引；新增测试覆盖危险标签、事件属性、`javascript:` 链接和任务列表，运行 `npm test` 通过。 <!-- comet-task:2eef1504-318c-41b1-91ff-ea9795f3852b -->
-- [ ] 3.3 实现 `src/utils/markdown/headings.ts`：为 h1–h4 生成唯一 id，提取层级和文本并构建目录树；新增测试覆盖重复标题、中文标题和层级关系，运行 `npm test` 通过。 <!-- comet-task:5a2ce9be-9519-4a4e-afe5-cfcf89224667 -->
-- [ ] 3.4 实现 `src/utils/markdown/export.ts`：克隆预览 DOM，移除 `[data-md-ui]` 节点，保留代码高亮 span、Mermaid SVG 和 KaTeX MathML；新增测试覆盖 UI 剔除和关键内容保留，运行 `npm test` 通过。 <!-- comet-task:022caa3b-61bc-499f-81e5-6208383b20e6 -->
-- [ ] 3.5 实现 `src/utils/markdown/storage.ts`：读写 `toolbox:markdown:content` 与 `toolbox:markdown:settings`，包含 settings 版本、比例范围校验和损坏 JSON 回退；新增测试覆盖默认值、越界比例和损坏数据，运行 `npm test` 通过。 <!-- comet-task:210a6486-1d10-446e-8f49-b34e1bdbee1d -->
+- [x] 3.1 实现 `src/utils/markdown/render.ts`：使用 marked 开启 GFM，自定义 code renderer 处理 Mermaid 占位、highlight.js 高亮和未知语言转义；新增单元测试覆盖表格、任务列表、围栏代码、Mermaid 围栏和未知语言，运行 `npm test` 通过。 <!-- comet-task:4aa8ef85-e766-4b0a-8301-a030839fbb45 -->
+- [x] 3.2 实现 `src/utils/markdown/sanitize.ts`：配置 DOMPurify 禁止 script/iframe/form/style/object/embed、事件属性和 `style` 属性，保留 GFM 任务列表所需 input 与 Mermaid 占位索引；新增测试覆盖危险标签、事件属性、`javascript:` 链接和任务列表，运行 `npm test` 通过。 <!-- comet-task:2eef1504-318c-41b1-91ff-ea9795f3852b -->
+- [x] 3.3 实现 `src/utils/markdown/headings.ts`：为 h1–h4 生成唯一 id，提取层级和文本并构建目录树；新增测试覆盖重复标题、中文标题和层级关系，运行 `npm test` 通过。 <!-- comet-task:5a2ce9be-9519-4a4e-afe5-cfcf89224667 -->
+- [x] 3.4 实现 `src/utils/markdown/export.ts`：克隆预览 DOM，移除 `[data-md-ui]` 节点，保留代码高亮 span、Mermaid SVG 和 KaTeX MathML；新增测试覆盖 UI 剔除和关键内容保留，运行 `npm test` 通过。 <!-- comet-task:022caa3b-61bc-499f-81e5-6208383b20e6 -->
+- [x] 3.5 实现 `src/utils/markdown/storage.ts`：读写 `toolbox:markdown:content` 与 `toolbox:markdown:settings`，包含 settings 版本、比例范围校验和损坏 JSON 回退；新增测试覆盖默认值、越界比例和损坏数据，运行 `npm test` 通过。 <!-- comet-task:210a6486-1d10-446e-8f49-b34e1bdbee1d -->
 
 ## 4. CodeMirror 编辑器
 
