@@ -14,6 +14,8 @@ dist-ssr
 
 # Editor directories and files
 .vscode/
+.agents/
+.codex/
 .idea
 .DS_Store
 *.suo
@@ -26,3 +28,8 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# >>> Comet managed project state >>>
+!/.comet/
+/.comet/*
+!/.comet/config.yaml
+# <<< Comet managed project state <<<
