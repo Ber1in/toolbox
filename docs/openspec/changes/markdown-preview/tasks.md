@@ -2,9 +2,9 @@
 
 ## 1. 依赖与测试基线
 
-- [ ] 1.1 在 `package.json` 中加入 CodeMirror 6 相关包、`marked`、`dompurify`、`highlight.js`、`mermaid`、`katex`，并加入 `vitest`、`jsdom` 开发依赖；运行 `npm install`，确认 `package-lock.json` 更新且无安装错误。 <!-- comet-task:a568655a-b4cd-4e57-94d7-23ddc1094e9e -->
-- [ ] 1.2 增加 `vitest.config.ts` 与 `npm test` 脚本，创建一个最小的 Markdown 工具测试文件；运行 `npm test`，确认测试框架可启动并通过。 <!-- comet-task:901674df-2369-4475-9694-84cdac6ef655 -->
-- [ ] 1.3 在 `src/styles/tokens.css` 中补充 Markdown 工作区、编辑器、预览、目录、代码块和语法高亮令牌（含明暗主题）；运行 `npm run build`，确认令牌文件无语法错误，并在后续样式中只引用令牌。 <!-- comet-task:d3d2a49f-d10f-4717-b3cb-a7bbcd155149 -->
+- [x] 1.1 在 `package.json` 中加入 CodeMirror 6 相关包、`marked`、`dompurify`、`highlight.js`、`mermaid`、`katex`，并加入 `vitest`、`jsdom` 开发依赖；运行 `npm install`，确认 `package-lock.json` 更新且无安装错误。 <!-- comet-task:a568655a-b4cd-4e57-94d7-23ddc1094e9e -->
+- [x] 1.2 增加 `vitest.config.ts` 与 `npm test` 脚本，创建一个最小的 Markdown 工具测试文件；运行 `npm test`，确认测试框架可启动并通过。 <!-- comet-task:901674df-2369-4475-9694-84cdac6ef655 -->
+- [x] 1.3 在 `src/styles/tokens.css` 中补充 Markdown 工作区、编辑器、预览、目录、代码块和语法高亮令牌（含明暗主题）；运行 `npm run build`，确认令牌文件无语法错误，并在后续样式中只引用令牌。 <!-- comet-task:d3d2a49f-d10f-4717-b3cb-a7bbcd155149 -->
 
 ## 2. 工具入口与全宽布局
 
