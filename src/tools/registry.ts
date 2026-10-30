@@ -17,6 +17,7 @@ import HexTool from './HexTool.vue'
 import HttpTool from './HttpTool.vue'
 import IpTool from './IpTool.vue'
 import JsonTool from './JsonTool.vue'
+import MarkdownTool from './MarkdownTool.vue'
 import MorseTool from './MorseTool.vue'
 import NetmaskTool from './NetmaskTool.vue'
 import PasswordTool from './PasswordTool.vue'
@@ -62,6 +63,7 @@ const components: Record<string, Component> = {
   count: CountTool,
   regex: RegexTool,
   replace: ReplaceTool,
+  markdown: MarkdownTool,
   compress: CompressTool,
   convert: ConvertTool,
   crop: CropTool,

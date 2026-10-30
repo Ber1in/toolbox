@@ -8,9 +8,9 @@
 
 ## 2. 工具入口与全宽布局
 
-- [ ] 2.1 在 `src/data/toolbox.ts` 的 `text` 分类新增 `markdown` 工具条目，名称为「Markdown 预览」，描述为「实时编辑与预览 Markdown」，图标使用合适的 lucide 图标；在 `src/tools/registry.ts` 注册 `MarkdownTool.vue`；运行 `npm run build`，确认类型检查通过。 <!-- comet-task:63301a14-591c-41d0-878a-109c008db950 -->
-- [ ] 2.2 为 `Tool` 增加可选 `fullWidth` 标记，并在 `src/views/ToolView.vue` 中为 Markdown 工具启用全宽容器；分别访问 `/tool/markdown` 和 `/tool/json`，确认前者全宽、后者仍保持 960px。 <!-- comet-task:e1b022ce-8b51-4628-8354-01f02226353a -->
-- [ ] 2.3 在 `src/i18n/en.ts` 中补充工具名称、描述、分类和基础界面文案的英文翻译；切换到 English，确认 `/tool/markdown` 不出现中文回退或原始 key。 <!-- comet-task:d9e22044-67df-4ffa-9705-f90391d2143d -->
+- [x] 2.1 在 `src/data/toolbox.ts` 的 `text` 分类新增 `markdown` 工具条目，名称为「Markdown 预览」，描述为「实时编辑与预览 Markdown」，图标使用合适的 lucide 图标；在 `src/tools/registry.ts` 注册 `MarkdownTool.vue`；运行 `npm run build`，确认类型检查通过。 <!-- comet-task:63301a14-591c-41d0-878a-109c008db950 -->
+- [x] 2.2 为 `Tool` 增加可选 `fullWidth` 标记，并在 `src/views/ToolView.vue` 中为 Markdown 工具启用全宽容器；分别访问 `/tool/markdown` 和 `/tool/json`，确认前者全宽、后者仍保持 960px。 <!-- comet-task:e1b022ce-8b51-4628-8354-01f02226353a -->
+- [x] 2.3 在 `src/i18n/en.ts` 中补充工具名称、描述、分类和基础界面文案的英文翻译；切换到 English，确认 `/tool/markdown` 不出现中文回退或原始 key。 <!-- comet-task:d9e22044-67df-4ffa-9705-f90391d2143d -->
 
 ## 3. Markdown 渲染与安全核心
 

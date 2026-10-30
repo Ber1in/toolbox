@@ -14,8 +14,12 @@ const entry = computed(() => findTool(props.id))
 </script>
 
 <template>
-  <main v-if="entry" class="tool-page" :class="`cat-${entry.category}`">
-    <div class="tool-page__inner">
+  <main
+    v-if="entry"
+    class="tool-page"
+    :class="[`cat-${entry.category}`, { 'tool-page--wide': entry.fullWidth }]"
+  >
+    <div class="tool-page__inner" :class="{ 'tool-page__inner--wide': entry.fullWidth }">
       <RouterLink class="tool-back" to="/">
         <ArrowLeft :size="16" :stroke-width="2" />
         {{ t('全部工具') }}

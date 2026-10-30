@@ -16,6 +16,7 @@ import {
   Crop,
   Dices,
   FileDiff,
+  FileText,
   FoldVertical,
   Globe,
   Hash,
@@ -51,6 +52,8 @@ export interface Tool {
   name: string
   description: string
   icon: Component
+  /** Opt into the full-width tool page layout (used by workspace-style tools). */
+  fullWidth?: boolean
 }
 
 export interface ToolCategory {
@@ -246,6 +249,13 @@ export const toolCategories: ToolCategory[] = [
         name: '文本替换',
         description: '批量查找替换文本',
         icon: Replace,
+      },
+      {
+        id: 'markdown',
+        name: 'Markdown 预览',
+        description: '实时编辑与预览 Markdown',
+        icon: FileText,
+        fullWidth: true,
       },
     ],
   },
