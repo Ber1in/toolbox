@@ -2,6 +2,8 @@
 comet_change: markdown-preview
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-10-30-markdown-preview
+status: final
 ---
 
 # Design

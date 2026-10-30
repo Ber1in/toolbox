@@ -2,6 +2,7 @@
 change: markdown-preview
 design-doc: docs/openspec/changes/markdown-preview/design.md
 base-ref: 2a56e4719c196226e1bb00197dc540e0b185d27f
+archived-with: 2026-10-30-markdown-preview
 ---
 
 # Markdown 预览工具实施计划
