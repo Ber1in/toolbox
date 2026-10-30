@@ -119,6 +119,53 @@
   --cat-image-fg: #ff4d4f;
   --cat-generate-bg: #eaf7f0;
   --cat-generate-fg: #10b981;
+
+  /* ---------- Markdown tool ---------- */
+  --md-workspace-min-height: clamp(520px, calc(100dvh - 280px), 900px);
+  --md-splitter-width: 8px;
+  --md-toc-width: 240px;
+  --md-content-max: 860px;
+  --md-editor-font-size: 14px;
+  --md-editor-line-height: 1.7;
+  --md-pane-border: var(--color-border);
+  --md-toolbar-bg: var(--color-bg);
+  --md-editor-bg: var(--color-bg);
+  --md-editor-fg: var(--color-ink);
+  --md-editor-gutter-bg: var(--color-surface);
+  --md-editor-gutter-fg: var(--color-ink-subtle);
+  --md-editor-active-line: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  --md-editor-selection: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --md-editor-cursor: var(--color-ink);
+  --md-editor-panel-bg: var(--color-surface);
+  --md-splitter-bg: var(--color-border);
+  --md-splitter-hover: var(--color-accent);
+  --md-preview-bg: var(--color-bg);
+  --md-preview-fg: var(--color-ink);
+  --md-preview-muted: var(--color-ink-muted);
+  --md-preview-border: var(--color-border);
+  --md-preview-code-bg: var(--color-surface);
+  --md-preview-inline-code-bg: var(--color-chip);
+  --md-preview-blockquote-border: var(--color-accent);
+  --md-toc-bg: var(--color-bg);
+  --md-toc-fg: var(--color-ink-muted);
+  --md-toc-heading-fg: var(--color-ink);
+  --md-toc-active-bg: var(--color-accent-soft);
+  --md-toc-active-fg: var(--color-accent);
+  --md-code-header-bg: var(--color-surface);
+  --md-code-header-fg: var(--color-ink-muted);
+  --md-image-error-bg: var(--color-surface);
+  --md-image-error-fg: var(--color-danger);
+  --md-search-match: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  --md-search-match-selected: color-mix(in srgb, var(--color-accent) 34%, transparent);
+  --md-syntax-comment: #8a8a93;
+  --md-syntax-keyword: #7c3aed;
+  --md-syntax-string: #0f766e;
+  --md-syntax-number: #b45309;
+  --md-syntax-function: #1d4ed8;
+  --md-syntax-variable: #9a3412;
+  --md-syntax-tag: #b91c1c;
+  --md-syntax-attr: #6d28d9;
+  --md-syntax-builtin: #0369a1;
 }
 
 /**
@@ -153,4 +200,16 @@
   --cat-text-bg: color-mix(in srgb, var(--cat-text-fg) 16%, transparent);
   --cat-image-bg: color-mix(in srgb, var(--cat-image-fg) 16%, transparent);
   --cat-generate-bg: color-mix(in srgb, var(--cat-generate-fg) 16%, transparent);
+
+  --md-editor-active-line: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  --md-editor-selection: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --md-syntax-comment: #7c7c87;
+  --md-syntax-keyword: #c4b5fd;
+  --md-syntax-string: #6ee7b7;
+  --md-syntax-number: #fbbf24;
+  --md-syntax-function: #93c5fd;
+  --md-syntax-variable: #fdba74;
+  --md-syntax-tag: #fca5a5;
+  --md-syntax-attr: #d8b4fe;
+  --md-syntax-builtin: #7dd3fc;
 }
