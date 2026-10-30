@@ -60,8 +60,7 @@ async function onNavigate(target: 'all' | 'favorites' | 'about') {
 
 <style scoped>
 .app {
-  max-width: var(--layout-max);
-  margin: 0 auto;
+  width: 100%;
   background: var(--color-bg);
 }
 </style>
